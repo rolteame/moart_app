@@ -7,6 +7,10 @@ module.exports = {
   prefix: "",
   
   theme: {
+    fontFamily: {
+      display: ["Proxima Nova", "sans-serif"],
+      body: ["Proxima Nova", "sans-serif"],
+    },
     container: {
       center: true,
       padding: "2rem",
