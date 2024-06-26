@@ -50,7 +50,7 @@ const submit = handleSubmit((values) => {
 </script>
 
 <template>
-	<form class="w-full space-y-6" @submit.prevent="submit">
+	<form class="w-full space-y-4" @submit.prevent="submit">
 		<!--Full Name-->
 		<FormField v-slot="{ componentField }" name="name">
 			<FormItem>
@@ -105,7 +105,7 @@ const submit = handleSubmit((values) => {
 			</FormItem>
 		</FormField>
 
-		<div class="flex items-center space-x-2">
+		<div class="flex items-center">
 			<FormField v-slot="{ value, handleChange }" type="checkbox" name="terms">
 				<FormItem class="space-x-5">
 					<FormControl>

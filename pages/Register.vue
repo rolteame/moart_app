@@ -11,7 +11,7 @@ useHead({
 			<img
 				src="~/assets/img/bg-register.png"
 				alt="Side Image"
-				class="h-[100%] w-full register-image-radius"
+				class="h-max w-full register-image-radius"
 			/>
 		</div>
 		<div class="bg-white w-[54%] h-[100vh] px-28 pt-8">
@@ -52,13 +52,13 @@ useHead({
 					alt="Moart Logo"
 					class="h-[60px] mx-auto"
 				/>
-				<p class="text-4xl pt-2 pb-8 text-white font-medium text-center">
+				<p class="text-4xl pt-1 pb-8 text-white font-medium text-center">
 					Register
 				</p>
 			</div>
 			<AuthRegisterFormMobile />
 			</div>
-			<div class="pt-6">
+			<div class="pt-3">
 				<p class="font-thin text-center">
 					Already have an account?
 					<span class="font-bold underline"
