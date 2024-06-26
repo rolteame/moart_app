@@ -48,6 +48,7 @@ const submit = handleSubmit((values) => {
 							<LucideMail
 								class="size-6 text-muted-foreground"
 								color="#1B5DB1"
+								stroke-width="1"
 							/>
 						</span>
 					</div>
@@ -73,12 +74,14 @@ const submit = handleSubmit((values) => {
 								color="#1B5DB1"
 								@click="inputType = 'text'"
 								v-show="inputType === 'password'"
+								stroke-width="1"
 							/>
 							<LucideEye
 								class="size-6 text-muted-foreground"
 								color="#1B5DB1"
 								@click="inputType = 'password'"
 								v-show="inputType === 'text'"
+								stroke-width="1"
 							/>
 						</span>
 					</div>
