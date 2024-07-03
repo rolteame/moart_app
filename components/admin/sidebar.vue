@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+
 const route = useRoute()
 </script>
 
@@ -14,7 +15,7 @@ const route = useRoute()
 			<li><NuxtLink to="" class="flex gap-3 content-center"><LucideBellDot :size="20" stroke-width="1"/>Notification</NuxtLink></li>
 		</div>
 		<div class="">
-      <li><NuxtLink to="/admin/profile" class="flex gap-3 content-center"><img src="~/assets/img/icons/profile.svg" alt="profile icon">Profile</NuxtLink></li>
+      <li><NuxtLink to="/admin/profile" class="flex gap-3 content-center"><LucideUser :size="20" stroke-width="1"/>Profile</NuxtLink></li>
       <li class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3"><img src="~/assets/img/icons/logout.svg" alt="logout icon">Logout</li>
     </div>
 	</ul>
