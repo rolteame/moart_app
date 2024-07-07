@@ -1,3 +1,3 @@
 <template>
-profile page
+profile
 </template>

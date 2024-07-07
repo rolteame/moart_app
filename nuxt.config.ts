@@ -20,7 +20,7 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      link: [{rel: 'icon', type: 'image/png', href: './logo.png'}]
+      link: [{rel: 'icon', type: 'image/png', href: './assets/img/logo.png'}]
     }
   },
   routeRules: {

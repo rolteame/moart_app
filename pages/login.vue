@@ -5,7 +5,7 @@ useHead({
 </script>
 
 <template>
-	<section class="container-fluid">
+	<section class="">
 		<img src="~/assets/img/bg-full.jpg" alt="Background Image" class="object-cover h-[100vh] w-full" />
 		<div
 			class="absolute bg-gradient-to-br from-[#064274CC] from-20% to-[#DD9933CC] h-[100vh] w-full top-0 flex justify-center">
@@ -22,8 +22,8 @@ useHead({
 								Register
 							</button></NuxtLink>
 					</div>
-					<div class="h-[80%] flex justify-center">
-						<div>
+					<div class="h-[80%] flex justify-center my-auto">
+						<div class="my-auto">
 							<img src="~/assets/img/logo.png" alt="Moart Logo" class="h-[60px] mx-auto" />
 							<p class="text-2xl pt-2 text-[#1B5DB1] font-medium text-center">
 								Welcome Back
