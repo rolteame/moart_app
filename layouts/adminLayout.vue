@@ -1,6 +1,12 @@
 <template>
-	<div class="py-5">
-		<AdminHeader />
+	<div class="py-3">
+		<div class="lg:hidden flex justify-between px-5 items-center" >
+			<LucideMenu :size="30" stroke-width="2"  class="cursor-pointer" />
+			<img src="~/assets/img/logo_full.png" alt="Moart Logo" class="w-16 lg:w-20 ms-12" >
+		</div>
+		<div  class="hidden lg:block">
+			<AdminHeader />
+		</div>
 	</div>
 
 	<div class="flex gap-4">

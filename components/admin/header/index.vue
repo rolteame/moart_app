@@ -1,5 +1,5 @@
 <template>
-<header class="w-1/6 flex justify-center">
-  <img src="~/assets/img/logo_full.png" alt="Moart Logo" class="w-20 ps-4 ">
+<header class="w-full flex lg:justify-start justify-end px-4">
+  <img src="~/assets/img/logo_full.png" alt="Moart Logo" class="w-16 lg:w-20 ms-12" >
 </header>
 </template>
