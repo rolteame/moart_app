@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+useHead({
+	title: "Email COnfirmed | Moart",
+});
+</script>
+
 <template>
 	<section class="container-fluid">
 		<img

@@ -1,8 +1,14 @@
+<script lang="ts" setup>
+useHead({
+	title: "Properties - Admin | Moart",
+});
+</script>
+
 <template>
 	<div class="flex justify-between bg-white rounded-xl shadow-md px-4 py-3 content-center">
-		<p class="text-[#1B5DB1] text-xl my-auto font-bold">Properties List</p>
+		<p class="text-[#1B5DB1] lg:text-xl text:md my-auto font-bold">Properties List</p>
 
-		<Button class="bg-[#1B5DB1]"><LucidePlus class="mr-3" :size="18"/> Add Property</Button>
+		<Button class="bg-[#1B5DB1] text-md lg:text-lg"><LucidePlus class="mr-3" :size="18"/> Add Property</Button>
 	</div>
   <AdminPropertiesAnalytics />
 

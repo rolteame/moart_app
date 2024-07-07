@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+useHead({
+	title: "Verify Email | Moart",
+});
+</script>
+
 <template>
 	<section class="container-fluid">
 		<img
