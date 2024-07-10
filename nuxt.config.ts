@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@nuxtjs/google-fonts", "nuxt-lucide-icons"],
+  css: ['animate.css/animate.min.css'],
   shadcn: {
     /**
      * Prefix for all the imported component

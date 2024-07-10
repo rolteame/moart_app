@@ -8,7 +8,7 @@ useHead({
 	<div class="flex justify-between bg-white rounded-xl shadow-md px-4 py-3 content-center">
 		<p class="text-[#1B5DB1] lg:text-xl text:md my-auto font-bold">Properties List</p>
 
-		<Button class="bg-[#1B5DB1] text-sm lg:text-lg"><LucidePlus class="lg:mr-3 mr-2" :size="18"/> Add Property</Button>
+		<NuxtLink to="/admin/properties/add-property"><Button class="bg-[#1B5DB1] text-sm lg:text-lg"><LucidePlus class="lg:mr-3 mr-2" :size="18"/> Add Property</Button></NuxtLink>
 	</div>
   <AdminPropertiesAnalytics />
 
