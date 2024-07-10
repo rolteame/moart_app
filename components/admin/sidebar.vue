@@ -12,8 +12,8 @@ const patharray = route.path.split("/")
 	</div>
 	<ul class="flex flex-col justify-between h-[80vh] lg:h-[77vh] font-normal">
 		<div >
-			<li><NuxtLink to="/admin" class="flex gap-3 content-center"><LucideLayoutGrid :size="20" stroke-width="1"/>Dashboard</NuxtLink></li>
-			<li><NuxtLink to="/admin/properties/" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('properties') }"><LucideLandmark :size="20" stroke-width="1"/>Properties</NuxtLink></li>
+			<li @click="$emit('close')"><NuxtLink to="/admin" class="flex gap-3 content-center"><LucideLayoutGrid :size="20" stroke-width="1"/>Dashboard</NuxtLink></li>
+			<li @click="$emit('close')"><NuxtLink to="/admin/properties/" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('properties') }"><LucideLandmark :size="20" stroke-width="1"/>Properties</NuxtLink></li>
 			<li><NuxtLink to="" class="flex gap-3 content-center"><LucideBaggageClaim :size="20" stroke-width="1"/>Investment</NuxtLink></li>
       <li><NuxtLink to="" class="flex gap-3 content-center"><LucideBadgeDollarSign :size="20" stroke-width="1"/>Transactions</NuxtLink></li>
 			<li><NuxtLink to="" class="flex gap-3 content-center"><LucideUserRoundCog :size="20" stroke-width="1"/>Users</NuxtLink></li>
