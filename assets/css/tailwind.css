@@ -80,4 +80,9 @@
   .register-image-radius {
     border-radius: 0 300px 0 0;
   }
+
+  .bg-success {
+    --tw-bg-opacity: 1;
+    background-color: rgb(34 197 94 / var(--tw-bg-opacity));
+  }
 }

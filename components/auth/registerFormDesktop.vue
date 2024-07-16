@@ -4,11 +4,13 @@ import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
 const termsError = ref("")
+const config = useRuntimeConfig();
+const { $toast }: any = useNuxtApp();
 
 const formSchema = toTypedSchema(
 	z
 		.object({
-			name: z.string(),
+			fullName: z.string(),
 			terms: z.boolean(),
 			email: z
 				.string()
@@ -38,21 +40,39 @@ const { handleSubmit } = useForm({
   },
 });
 
-const submit = handleSubmit((values) => {
+const submit = handleSubmit( async (values) => {
 	if(values.terms === false) {
 		console.log(values.terms)
 		termsError.value = "You must accept the terms and conditions"
 		return
 	}
+	termsError.value = ""
 
-	console.log("Form Submitted", values);
+
+	const { fullName, email, password } = values;
+
+	const { data, error }: any = await useFetch(
+		`${config.public.backendUrl}/auth/register`,
+		{
+			method: "POST",
+			body: { fullName, email, password },
+		}
+	);
+
+	if(error.value?.data?.message) {
+		$toast.error(error.value.data.message)	
+	}
+	setTimeout(() => {
+		$toast.success(data.value.message)
+	})
+	navigateTo("/confirm-email")
 });
 </script>
 
 <template>
 	<form class="w-full space-y-6" @submit.prevent="submit">
 		<!--Full Name-->
-		<FormField v-slot="{ componentField }" name="name">
+		<FormField v-slot="{ componentField }" name="fullName">
 			<FormItem>
 				<FormLabel>Your Name:</FormLabel>
 				<FormControl>

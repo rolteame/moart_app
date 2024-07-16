@@ -2,8 +2,18 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
+import type { Login } from "~/types/authTypes";
 
 const inputType = ref("password");
+const auth = useAuthStore();
+const config = useRuntimeConfig();
+
+const loading = ref(false);
+const loginSuccess = ref(false);
+const errorMessage = ref("");
+const successMessage = ref("");
+const toastTitle = ref("")
+
 
 const formSchema = toTypedSchema(
 	z.object({
@@ -25,13 +35,40 @@ const { handleSubmit } = useForm({
 	validationSchema: formSchema,
 });
 
-const submit = handleSubmit((values) => {
-	console.log('Form Submitted', values)
-})
+const onSubmit = handleSubmit(async (values: Login) => {
+	loading.value = true;
+	const { data, error }: any = await useFetch(
+		`${config.public.backendUrl}/auth/login`,
+		{
+			method: "POST",
+			body: values,
+		}
+	);
+
+	if (error.value?.data.code === 401) {
+		errorMessage.value = error.value.data.message;
+		loading.value = false;
+		toastTitle.value = "Login Failed"
+		setTimeout(() => {
+			errorMessage.value = "";
+		}, 3000)
+		return;
+	}
+	loginSuccess.value = true;
+	toastTitle.value = "Login Successful"
+	successMessage.value = `Welcome ${data.value.user.fullName}`;
+	auth.user = data.value.user;
+	auth.token = data.value.tokens.access.token;
+
+	setTimeout(() => {
+		loading.value = false;
+		navigateTo("/admin");
+	}, 3000)
+});
 </script>
 
 <template>
-	<form @submit.prevent="submit">
+	<form @submit.prevent="onSubmit">
 		<FormField v-slot="{ componentField }" name="email">
 			<FormItem class="mb-8">
 				<FormControl>

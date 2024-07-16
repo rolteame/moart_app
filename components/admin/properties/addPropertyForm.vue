@@ -3,8 +3,6 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
-const inputType = ref("password");
-
 const MAX_FILE_SIZE = 50000000;
 const ACCEPTED_IMAGE_TYPES = [
 	"image/jpeg",
@@ -55,12 +53,12 @@ const { handleSubmit, setFieldValue } = useForm({
 });
 
 const submit = handleSubmit((values) => {
-	console.log("Form Submitted", values);
+	console.log("Form Submitted", values.media);
 });
 </script>
 
 <template>
-	<form class="p-4 space-y-5" @submit="submit">
+	<form class="p-4 space-y-5" @submit.prevent="submit">
 		<div class="md:flex justify-between">
 			<!--Property Name-->
 			<FormField v-slot="{ componentField }" name="propertyName">
@@ -177,7 +175,7 @@ const submit = handleSubmit((values) => {
 				<FormItem>
 					<FormLabel>Property Description</FormLabel>
 					<FormControl>
-						<Textarea v-bind="componentField" class="resize-none lg:h-32" />
+						<Textarea v-bind="componentField" class="resize-none lg:h-32" ></Textarea>
 					</FormControl>
 					<FormMessage />
 				</FormItem>
