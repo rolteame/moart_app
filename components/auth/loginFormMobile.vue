@@ -63,7 +63,13 @@ const onSubmit = handleSubmit(async (values: Login) => {
 
 	setTimeout(() => {
 		loading.value = false;
-		navigateTo("/admin");
+		if (auth.user.role === "admin") {
+			return navigateTo("/admin");
+		}
+
+		if (auth.user.role === "user") {
+			return navigateTo("/user-dashboard");
+		}
 	}, 3000)
 });
 </script>
