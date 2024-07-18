@@ -12,7 +12,8 @@ const loading = ref(false);
 const loginSuccess = ref(false);
 const errorMessage = ref("");
 const successMessage = ref("");
-const toastTitle = ref("");
+const toastTitle = ref("")
+
 
 const formSchema = toTypedSchema(
 	z.object({
@@ -47,24 +48,29 @@ const onSubmit = handleSubmit(async (values: Login) => {
 	if (error.value?.data.code === 401) {
 		errorMessage.value = error.value.data.message;
 		loading.value = false;
-		toastTitle.value = "Login Failed";
+		toastTitle.value = "Login Failed"
 		setTimeout(() => {
 			errorMessage.value = "";
-		}, 3000);
+		}, 3000)
 		return;
 	}
 	loginSuccess.value = true;
-	toastTitle.value = "Login Successful";
+	toastTitle.value = "Login Successful"
 	successMessage.value = `Welcome ${data.value.user.fullName}`;
 	auth.isLoggedin = true;
 	auth.user = data.value.user;
 	auth.token = data.value.tokens.access.token;
 
-	
 	setTimeout(() => {
 		loading.value = false;
-		navigateTo("/admin");
-	}, 3000);
+		if (auth.user.role === "admin") {
+			return navigateTo("/admin");
+		}
+
+		if (auth.user.role === "user") {
+			return navigateTo("/user-dashboard");
+		}
+	}, 3000)
 });
 </script>
 

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 const auth = useAuthStore();
 useHead({
-	title: "Dashboard - Admin | Moart",
+	title: "Profile - Dashboard | Moart",
 });
 </script>
 
 <template>
   <div>
-    admin dashboard
+    profile page
     
   </div>
 </template>

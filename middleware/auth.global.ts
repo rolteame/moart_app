@@ -9,5 +9,9 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (auth.user.role === 'admin') {
       return navigateTo('/admin');
     }
+
+    if (auth.user.role === 'user') {
+      return navigateTo('/user-dashboard');
+    }
   }
 });
