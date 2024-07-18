@@ -4,11 +4,19 @@ import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
 const termsError = ref("");
+const config = useRuntimeConfig();
+const auth = useAuthStore();
+
+const loading = ref(false);
+const signupSuccess = ref(false);
+const errorMessage = ref("");
+const successMessage = ref("");
+const toastTitle = ref("");
 
 const formSchema = toTypedSchema(
 	z
 		.object({
-			name: z.string(),
+			fullName: z.string(),
 			terms: z.boolean(),
 			email: z
 				.string()
@@ -38,18 +46,57 @@ const { handleSubmit } = useForm({
 	},
 });
 
-const submit = handleSubmit((values) => {
+const submit = handleSubmit( async (values) => {
 	if (values.terms === false) {
 		console.log(values.terms);
 		termsError.value = "You must accept the terms and conditions";
 		return;
 	}
+	termsError.value = "";
 
-	console.log("Form Submitted", values);
+	const { fullName, email, password } = values;
+
+	const { data, error }: any = await useFetch(
+		`${config.public.backendUrl}/auth/register`,
+		{
+			method: "POST",
+			body: { fullName, email, password },
+		}
+	);
+
+	if (error.value?.data.code === 400) {
+		errorMessage.value = error.value.data.message;
+		loading.value = false;
+		toastTitle.value = errorMessage.value;
+		setTimeout(() => {
+			errorMessage.value = "";
+		}, 3000);
+		return;
+	}
+	signupSuccess.value = true;
+	toastTitle.value = "Account Created Successfully";
+	auth.user = data.value.user;
+	auth.token = data.value.tokens.access.token;
+	loading.value = false;
+	navigateTo(`/verify-email/${data.value.user.email}`);
 });
 </script>
 
 <template>
+	<!-- Toast -->
+	<div
+		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
+		v-show="errorMessage || signupSuccess"
+	>
+		<Toast
+			:title="toastTitle"
+			:variant="errorMessage ? 'bg-destructive' : 'bg-success'"
+		>
+			<LucideCircleAlert v-show="errorMessage" />
+			<LucideCircleCheckBig v-show="signupSuccess" />
+		</Toast>
+	</div>
+	<!--Register Form-->
 	<form class="w-full space-y-4" @submit.prevent="submit">
 		<!--Full Name-->
 		<FormField v-slot="{ componentField }" name="name">

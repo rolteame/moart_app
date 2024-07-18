@@ -83,6 +83,7 @@ const submit = handleSubmit(async (values) => {
 </script>
 
 <template>
+	<!--Toast-->
 	<div
 		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
 		v-show="errorMessage || signupSuccess"
@@ -95,6 +96,7 @@ const submit = handleSubmit(async (values) => {
 			<LucideCircleCheckBig v-show="signupSuccess" />
 		</Toast>
 	</div>
+	<!--Register Form-->
 	<form class="w-full space-y-6" @submit.prevent="submit">
 		<!--Full Name-->
 		<FormField v-slot="{ componentField }" name="fullName">
