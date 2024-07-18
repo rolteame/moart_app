@@ -2,15 +2,12 @@
 defineProps({
   title: {
     type: String,
-    default: 'Title',
   },
   description: {
     type: String,
-    default: 'Description',
   },
   variant: {
     type: String,
-    default: 'varient',
   }
 })
 </script>

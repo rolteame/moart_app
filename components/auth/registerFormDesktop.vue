@@ -3,9 +3,15 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
-const termsError = ref("")
+const termsError = ref("");
 const config = useRuntimeConfig();
-const { $toast }: any = useNuxtApp();
+const auth = useAuthStore();
+
+const loading = ref(false);
+const signupSuccess = ref(false);
+const errorMessage = ref("");
+const successMessage = ref("");
+const toastTitle = ref("");
 
 const formSchema = toTypedSchema(
 	z
@@ -36,18 +42,17 @@ const formSchema = toTypedSchema(
 const { handleSubmit } = useForm({
 	validationSchema: formSchema,
 	initialValues: {
-    terms: false,
-  },
+		terms: false,
+	},
 });
 
-const submit = handleSubmit( async (values) => {
-	if(values.terms === false) {
-		console.log(values.terms)
-		termsError.value = "You must accept the terms and conditions"
-		return
+const submit = handleSubmit(async (values) => {
+	if (values.terms === false) {
+		console.log(values.terms);
+		termsError.value = "You must accept the terms and conditions";
+		return;
 	}
-	termsError.value = ""
-
+	termsError.value = "";
 
 	const { fullName, email, password } = values;
 
@@ -59,17 +64,37 @@ const submit = handleSubmit( async (values) => {
 		}
 	);
 
-	if(error.value?.data?.message) {
-		$toast.error(error.value.data.message)	
+	if (error.value?.data.code === 400) {
+		errorMessage.value = error.value.data.message;
+		loading.value = false;
+		toastTitle.value = errorMessage.value;
+		setTimeout(() => {
+			errorMessage.value = "";
+		}, 3000);
+		return;
 	}
-	setTimeout(() => {
-		$toast.success(data.value.message)
-	})
-	navigateTo("/confirm-email")
+	signupSuccess.value = true;
+	toastTitle.value = "Account Created Successfully";
+	auth.user = data.value.user;
+	auth.token = data.value.tokens.access.token;
+	loading.value = false;
+	navigateTo(`/verify-email/${data.value.user.email}`);
 });
 </script>
 
 <template>
+	<div
+		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
+		v-show="errorMessage || signupSuccess"
+	>
+		<Toast
+			:title="toastTitle"
+			:variant="errorMessage ? 'bg-destructive' : 'bg-success'"
+		>
+			<LucideCircleAlert v-show="errorMessage" />
+			<LucideCircleCheckBig v-show="signupSuccess" />
+		</Toast>
+	</div>
 	<form class="w-full space-y-6" @submit.prevent="submit">
 		<!--Full Name-->
 		<FormField v-slot="{ componentField }" name="fullName">
@@ -117,7 +142,11 @@ const submit = handleSubmit( async (values) => {
 			<FormField v-slot="{ value, handleChange }" type="checkbox" name="terms">
 				<FormItem class="space-x-5">
 					<FormControl>
-						<Checkbox :checked="value" @update:checked="handleChange" id="terms" />
+						<Checkbox
+							:checked="value"
+							@update:checked="handleChange"
+							id="terms"
+						/>
 					</FormControl>
 					<label
 						for="terms"
@@ -127,12 +156,13 @@ const submit = handleSubmit( async (values) => {
 						<span class="font-bold">agreement user policy</span> and
 						<span class="font-bold">cookie policy</span>.
 					</label>
-					<p class=" text-red-500 text-sm">{{ termsError }}</p>
+					<p class="text-red-500 text-sm">{{ termsError }}</p>
 				</FormItem>
 			</FormField>
 		</div>
 		<Button type="submit" class="w-full bg-[#1B5DB1] text-white text-lg py-2">
-			Register
+			<span v-show="loading === true">Loading ...</span>
+			<span v-show="loading === false">Register</span>
 		</Button>
 	</form>
 </template>

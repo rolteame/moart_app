@@ -5,10 +5,20 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref()
   const token = ref()
 
+  const confirmMessage = ref()
+
+  const isLoggedin = ref(false)
+
+  const userToken = computed(() => {
+    return token.value
+  })
+
 
   return {
     user,
-    token
+    token,
+    userToken,
+    isLoggedin
   }
 },
 {

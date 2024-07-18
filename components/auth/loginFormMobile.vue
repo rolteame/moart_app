@@ -57,6 +57,7 @@ const onSubmit = handleSubmit(async (values: Login) => {
 	loginSuccess.value = true;
 	toastTitle.value = "Login Successful"
 	successMessage.value = `Welcome ${data.value.user.fullName}`;
+	auth.isLoggedin = true;
 	auth.user = data.value.user;
 	auth.token = data.value.tokens.access.token;
 
