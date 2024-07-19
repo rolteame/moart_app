@@ -138,9 +138,10 @@ const onSubmit = handleSubmit(async (values: Login) => {
 		</FormField>
 		<div class="flex justify-center mt-14 mb-32">
 			<button
-				class="bg-[#1B5DB1] text-white py-2 px-10 rounded text-lg uppercase w-full"
+				class="bg-[#1B5DB1] text-white py-2 px-10 rounded text-lg uppercase"
 			>
-				Log in
+				<span v-show="loading === true">Loading ...</span>
+				<span v-show="loading === false">Log in</span>
 			</button>
 		</div>
 	</form>

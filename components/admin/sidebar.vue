@@ -60,7 +60,7 @@ const patharray = route.path.split("/");
 				>
 			</li>
 			<li @click="$emit('close')">
-				<NuxtLink to="" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('notifications') }"
+				<NuxtLink to="/admin/notifications" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('notifications') }"
 					><LucideBellDot :size="20" stroke-width="1" />Notification</NuxtLink
 				>
 			</li>

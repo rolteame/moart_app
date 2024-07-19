@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const auth = useAuthStore();
+
 useHead({
 	title: "Notifications - Dashboard | Moart",
 });
