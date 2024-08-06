@@ -2,7 +2,7 @@
 defineEmits(["close"]);
 
 const route = useRoute();
-const patharray = route.path.split("/");
+const patharray = ref(route.path.split("/"));
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const patharray = route.path.split("/");
 	<ul class="flex flex-col justify-between h-[80vh] lg:h-[77vh] font-normal">
 		<div>
 			<li @click="$emit('close')">
-				<NuxtLink to="/admin" class="flex gap-3 content-center"
+				<NuxtLink to="/admin" class="flex gap-3 content-center" 
 					><LucideLayoutGrid :size="20" stroke-width="1" />Dashboard</NuxtLink
 				>
 			</li>
@@ -23,7 +23,7 @@ const patharray = route.path.split("/");
 				<NuxtLink
 					to="/admin/properties/"
 					class="flex gap-3 content-center"
-					:class="{ 'text-[#1B5DB1]': patharray.includes('properties') }"
+					:class="{ 'text-[#1B5DB1]': patharray.includes('investments') }"
 					><LucideLandmark :size="20" stroke-width="1" />Properties</NuxtLink
 				>
 			</li>
@@ -50,12 +50,12 @@ const patharray = route.path.split("/");
 				>
 			</li>
 			<li @click="$emit('close')">
-				<NuxtLink to="" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('users') }"
+				<NuxtLink to="/admin/users" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('users') }"
 					><LucideUserRoundCog :size="20" stroke-width="1" />Users</NuxtLink
 				>
 			</li>
 			<li @click="$emit('close')">
-				<NuxtLink to="" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('Team') }"
+				<NuxtLink to="/admin/team" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('Team') }"
 					><LucideUsers :size="20" stroke-width="1" />Team</NuxtLink
 				>
 			</li>

@@ -46,7 +46,7 @@ const { handleSubmit } = useForm({
 	},
 });
 
-const submit = handleSubmit( async (values) => {
+const submit = handleSubmit(async (values) => {
 	if (values.terms === false) {
 		console.log(values.terms);
 		termsError.value = "You must accept the terms and conditions";
@@ -83,7 +83,7 @@ const submit = handleSubmit( async (values) => {
 </script>
 
 <template>
-	<!-- Toast -->
+	<!--Toast-->
 	<div
 		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
 		v-show="errorMessage || signupSuccess"

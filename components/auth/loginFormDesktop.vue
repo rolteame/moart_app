@@ -60,6 +60,7 @@ const onSubmit = handleSubmit(async (values: Login) => {
 	auth.isLoggedin = true;
 	auth.user = data.value.user;
 	auth.token = data.value.tokens.access.token;
+	auth.refreshToken = data.value.tokens.refresh.token
 
 	setTimeout(() => {
 		loading.value = false;

@@ -2,7 +2,7 @@
 defineEmits(["close"]);
 
 const route = useRoute();
-const patharray = route.path.split("/");
+const patharray = ref(route.path.split("/"));
 </script>
 
 <template>

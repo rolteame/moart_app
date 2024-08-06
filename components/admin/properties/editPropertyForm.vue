@@ -3,54 +3,19 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
+const showAlert = ref(true);
 const propertyImage = ref("");
-const file: Ref<File | any> = ref();
-const loadingImage= ref(false);
-const uploadSuccess = ref(false);
-const errorMessage = ref("");
-const successMessage = ref("");
-const toastTitle = ref("")
+const file: Ref<File | null> = ref(null);
+const uploadLoading = ref(false);
 
-const config = useRuntimeConfig();
-const auth = useAuthStore();
-
-const onFileChange = (e: Event) => {
-	const target = e.target as HTMLInputElement;
-	if (target.files) {
-		file.value = target.files[0];
-	}
-}
-
-const uploadImage = async () => {
-	loadingImage.value = true;
-	propertyImage.value = "";
-	const propertyImageFormData = new FormData();
-	propertyImageFormData.append("image", file.value, file.value.name);
-	
-	const { data, error } = await useFetch<any>(
-		`${config.public.backendUrl}/properties/upload`,{
-			method: "POST",
-			body: propertyImageFormData,
-			headers: {
-				Authorization: `Bearer ${auth.token}`,
-			}
-		}
-	)
-	if (error.value?.statusCode === 401) {
-		errorMessage.value = "Upload Failed. Please try again."
-		auth.resetToken()
-	}
-	
-	uploadSuccess.value = true;
-	errorMessage.value = "";
-	toastTitle.value = "Property Image Uploaded";
-	propertyImage.value = data.value.url;
-	file.value = "";
+const uploadImage = () => {
+	console.log(file.value);
+	if (file.value === null) return
+	uploadLoading.value = true;
 	setTimeout(() => {
-		loadingImage.value = false;
-		uploadSuccess.value = false;
+		uploadLoading.value = false;
 	}, 3000);
-}
+};
 
 const formSchema = toTypedSchema(
 	z.object({
@@ -59,10 +24,10 @@ const formSchema = toTypedSchema(
 		propertyStatus: z.string(),
 		propertyPrice: z.number(),
 		buyinPrice: z.number(),
-		interest: z.any().transform((value) => Number(value * 100)),
+		interest: z.any(),
 		propertyDescription: z.string(),
 		address: z.string(),
-		slots: z.any(),
+		availableSlots: z.any(),
 	})
 );
 
@@ -70,30 +35,28 @@ const { handleSubmit, setFieldValue } = useForm({
 	validationSchema: formSchema,
 	initialValues: {
 		interest: 0,
-		slots: 0,
+		availableSlots: 0,
 	},
 });
 
-const onSubmit = handleSubmit((values) => {
-	console.log("Form Submitted", {...values, image: propertyImage.value});
-});
+const submit = () => {
+	showAlert.value = true;
+};
 
+const onSubmit = handleSubmit((values) => {
+	console.log(values);
+});
 </script>
 
 <template>
-	<!--Toast-->
-	<div
-		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
-		v-show="errorMessage || uploadSuccess"
-	>
-		<Toast
-			:title="toastTitle"
-			:description="errorMessage ? errorMessage : successMessage"
-			:variant="errorMessage ? 'bg-destructive' : 'bg-success'"
-		>
-			<LucideCircleAlert v-show="errorMessage" />
-			<LucideCircleCheckBig v-show="uploadSuccess" />
-		</Toast>
+	<!--Alert-->
+	<div v-show="showAlert">
+		<BaseAlert
+			title="Edit Property"
+			description="Are you sure you want to edit this property"
+			@close="showAlert = false"
+      @confirm="onSubmit"
+		/>
 	</div>
 	<!--Upload Media-->
 	<div class="flex p-5 items-center gap-4">
@@ -113,10 +76,11 @@ const onSubmit = handleSubmit((values) => {
 			<Input
 				type="file"
 				class="w-full"
-				v-model="file"
-				@change="onFileChange"
+				@change="(event: any) => {
+					file = event.target.files[0];
+				}"
 			/>
-			<div class="flex gap-4 items-center">
+			<div class="flex gap-3 items-center">
 				<Button
 					type="submit"
 					class="bg-[#1B5DB1] text-white text-lg py-2 px-4 w-1/2"
@@ -128,7 +92,7 @@ const onSubmit = handleSubmit((values) => {
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
-					v-if="loadingImage"
+					v-show="uploadLoading"
 				>
 					<circle
 						class="opacity-25"
@@ -147,7 +111,8 @@ const onSubmit = handleSubmit((values) => {
 			</div>
 		</div>
 	</div>
-	<form class="p-4 space-y-5" @submit.prevent="onSubmit">
+	<!--Edit Property-->
+	<form class="p-4 space-y-5" @submit.prevent="submit">
 		<div class="md:flex justify-between">
 			<!--Property Name-->
 			<FormField v-slot="{ componentField }" name="propertyName">
@@ -193,8 +158,8 @@ const onSubmit = handleSubmit((values) => {
 						</FormControl>
 						<SelectContent>
 							<SelectGroup>
-								<SelectItem value="active"> Active </SelectItem>
-								<SelectItem value="inactive"> Inactive </SelectItem>
+								<SelectItem value="land"> Active </SelectItem>
+								<SelectItem value="house"> Inactive </SelectItem>
 							</SelectGroup>
 						</SelectContent>
 					</Select>
@@ -286,7 +251,7 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 
 			<!--Available Slots-->
-			<FormField v-slot="{ componentField }" name="slots">
+			<FormField v-slot="{ componentField }" name="availableSlots">
 				<FormItem class="md:w-[45%]">
 					<FormLabel for="availableSlots">Available Slots</FormLabel>
 					<FormControl>
@@ -297,9 +262,9 @@ const onSubmit = handleSubmit((values) => {
 							@update:model-value="
 								(v: any) => {
 									if (v) {
-										setFieldValue('slots', v);
+										setFieldValue('availableSlots', v);
 									} else {
-										setFieldValue('slots', undefined);
+										setFieldValue('availableSlots', undefined);
 									}
 								}
 							"
@@ -319,7 +284,7 @@ const onSubmit = handleSubmit((values) => {
 		</div>
 		<div class="space-x-4 flex justify-between md:justify-normal">
 			<Button type="submit" class="bg-[#1B5DB1] text-white text-lg py-2 px-4"
-				>Add Property</Button
+				>Edit Property</Button
 			>
 			<NuxtLink to="/admin/properties"
 				><Button class="bg-[#FC464626] text-[#E11F1F] border text-lg p-2 w-32"

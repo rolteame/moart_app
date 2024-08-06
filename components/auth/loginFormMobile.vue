@@ -60,6 +60,7 @@ const onSubmit = handleSubmit(async (values: Login) => {
 	auth.isLoggedin = true;
 	auth.user = data.value.user;
 	auth.token = data.value.tokens.access.token;
+	auth.refreshToken = data.value.tokens.refresh.token
 
 	setTimeout(() => {
 		loading.value = false;
@@ -75,6 +76,19 @@ const onSubmit = handleSubmit(async (values: Login) => {
 </script>
 
 <template>
+	<div
+		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
+		v-show="errorMessage || loginSuccess"
+	>
+		<Toast
+			:title="toastTitle"
+			:description="errorMessage ? errorMessage : successMessage"
+			:variant="errorMessage ? 'bg-destructive' : 'bg-success'"
+		>
+			<LucideCircleAlert v-show="errorMessage" />
+			<LucideCircleCheckBig v-show="loginSuccess" />
+		</Toast>
+	</div>
 	<form @submit.prevent="onSubmit">
 		<FormField v-slot="{ componentField }" name="email">
 			<FormItem class="mb-8">

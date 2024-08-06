@@ -75,8 +75,6 @@ const submit = handleSubmit(async (values) => {
 	}
 	signupSuccess.value = true;
 	toastTitle.value = "Account Created Successfully";
-	auth.user = data.value.user;
-	auth.token = data.value.tokens.access.token;
 	loading.value = false;
 	navigateTo(`/verify-email/${data.value.user.email}`);
 });

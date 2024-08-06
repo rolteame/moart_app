@@ -1,6 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	devtools: { enabled: true },
+	devtools: {
+		enabled: true,
+
+		timeline: {
+			enabled: true,
+		},
+	},
 	modules: [
 		"@nuxtjs/tailwindcss",
 		"shadcn-nuxt",
@@ -9,7 +15,7 @@ export default defineNuxtConfig({
 		"@pinia/nuxt",
 		"@pinia-plugin-persistedstate/nuxt",
 	],
-	css: ["animate.css/animate.min.css"],
+	css: ["animate.css/animate.min.css",],
 	shadcn: {
 		/**
 		 * Prefix for all the imported component
@@ -42,4 +48,5 @@ export default defineNuxtConfig({
 			backendUrl: process.env.BACKEND_URL,
 		},
 	},
+	// ssr: false,
 });

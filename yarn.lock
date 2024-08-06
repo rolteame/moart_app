@@ -1552,10 +1552,22 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tanstack/table-core@8.20.1":
+  version "8.20.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.20.1.tgz#74bfab10fa35bed51fa0bd2f3539a331d7e78f1b"
+  integrity sha512-5Ly5TIRHnWH7vSDell9B/OVyV380qqIJVg7H7R7jU4fPEmOD4smqAX7VRflpYI09srWR8aj5OLD2Ccs1pI5mTg==
+
 "@tanstack/virtual-core@3.5.1":
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/@tanstack/virtual-core/-/virtual-core-3.5.1.tgz#f519149bce9156d0e7954b9531df15f446f2fc12"
   integrity sha512-046+AUSiDru/V9pajE1du8WayvBKeCvJ2NmKPy/mR8/SbKKrqmSbj7LJBfXE+nSq4f5TBXvnCzu0kcYebI9WdQ==
+
+"@tanstack/vue-table@^8.20.1":
+  version "8.20.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/vue-table/-/vue-table-8.20.1.tgz#22d680adc514fef3ae1fb90f6e0ff89e6ea023e5"
+  integrity sha512-N39CtJFMlKccF7sMcxerZ//iUlKfme9+nM1msLqDpJsJBoBuc0BgIQAr9M83dlgWzCizF8/6EDzcvWbPlV1CHw==
+  dependencies:
+    "@tanstack/table-core" "8.20.1"
 
 "@tanstack/vue-virtual@^3.5.0":
   version "3.5.1"

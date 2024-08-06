@@ -1,7 +1,27 @@
 <script lang="ts" setup>
+import { useForm } from "vee-validate";
+import { toTypedSchema } from "@vee-validate/zod";
+import * as z from "zod";
+
 useHead({
 	title: "Notifications - Admin | Moart",
 });
+
+const formSchema = toTypedSchema(
+  z.object({
+    subject: z.string(),
+    message: z.string(),
+  })
+)
+
+const { handleSubmit } = useForm({
+	validationSchema: formSchema,
+});
+
+const onSubmit = handleSubmit((values) => {
+  console.log(values)
+})
+
 </script>
 
 <template>
@@ -16,13 +36,13 @@ useHead({
 		class="bg-white rounded-xl shadow-md px-4 py-3 mt-3 content-center text-[#4F4F4FA8]"
 	>
 		<p class="font-semibold text-lg">Send Email To All User’s</p>
-		<form class="p-4 space-y-5" @submit.prevent="submit">
+		<form class="p-4 space-y-5" @submit.prevent="onSubmit">
 			<!--Subject-->
 			<FormField v-slot="{ componentField }" name="subject">
 				<FormItem class="">
 					<FormLabel>Subject</FormLabel>
 					<FormControl>
-						<Input v-bind="componentField" type="text" />
+						<Input v-bind="componentField" type="text" placeholder="Enter Your Subject" />
 					</FormControl>
 					<FormMessage />
 				</FormItem>
@@ -36,6 +56,7 @@ useHead({
 							<Textarea
 								v-bind="componentField"
 								class="resize-none lg:h-40"
+                placeholder="Enter Your Message"
 							></Textarea>
 						</FormControl>
 						<FormMessage />

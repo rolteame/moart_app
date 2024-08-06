@@ -9,7 +9,7 @@
 				>
 				 <p class="lg:text-xl text-lg font-semibold">Lekki Phase I</p>
 				 <div>
-					<LucideSquarePen :size="25" stroke-width="1" class="mb-2 cursor-pointer" />
+					<NuxtLink to="/admin/properties/edit-property"><LucideSquarePen :size="25" stroke-width="1" class="mb-2 cursor-pointer" /></NuxtLink>
 					<LucideTrash2 :size="25" stroke-width="1" color="red" class="cursor-pointer" />
 				 </div>
 				</div>
