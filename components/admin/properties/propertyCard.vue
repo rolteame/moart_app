@@ -26,7 +26,6 @@ const deleteProperty = async (propertyId: string) => {
 		);
 
 		const toastId = useNuxtApp().$toast.loading("Deleting property...");
-		console.log(toastId);
 
 		if (error.value?.statusCode === 401) {
 			await auth.resetToken();

@@ -116,24 +116,53 @@ const onSubmit = handleSubmit(async (values) => {
 		}
 	);
 
+	const toastId = useNuxtApp().$toast.loading("Updating property...");
+
 	if (error.value?.statusCode === 401) {
-		useNuxtApp().$toast.error("Token expired, reftreshing token");
+		setTimeout(() => {
+			useNuxtApp().$toast.update(toastId, {
+				render: error.value?.data.message,
+				autoClose: true,
+				closeOnClick: true,
+				closeButton: true,
+				type: "error",
+				isLoading: false,
+			});
+		}, 2000);
 		loading.value = false;
 		await auth.resetToken();
 		return;
 	}
 
 	if (error.value?.statusCode === 400) {
-		useNuxtApp().$toast.error(error.value?.data.message);
+		setTimeout(() => {
+			useNuxtApp().$toast.update(toastId, {
+				render: error.value?.data.message,
+				autoClose: true,
+				closeOnClick: true,
+				closeButton: true,
+				type: "error",
+				isLoading: false,
+			});
+		}, 2000);
 		loading.value = false;
 		return;
 	}
 
-	useNuxtApp().$toast.success("Property updated successfully");
+	setTimeout(() => {
+		useNuxtApp().$toast.update(toastId, {
+			render: "Property updated successfully",
+			autoClose: true,
+			closeOnClick: true,
+			closeButton: true,
+			type: "error",
+			isLoading: false,
+		});
+	}, 2000);
 	loading.value = false;
 	setTimeout(() => {
 		navigateTo("/admin/properties");
-	}, 5000)
+	}, 5000);
 });
 </script>
 
