@@ -48,14 +48,16 @@ const deleteProperty = async (propertyId: string) => {
 			return;
 		}
 
-		useNuxtApp().$toast.update(toastId, {
-			render: "Property deleted successfully",
-			autoClose: true,
-			closeOnClick: true,
-			closeButton: true,
-			type: "success",
-			isLoading: false,
-		});
+		setTimeout(() => {
+			useNuxtApp().$toast.update(toastId, {
+				render: "Property deleted successfully",
+				autoClose: true,
+				closeOnClick: true,
+				closeButton: true,
+				type: "success",
+				isLoading: false,
+			});
+		}, 3000);
 		setTimeout(() => {
 			location.reload();
 		}, 3000);
