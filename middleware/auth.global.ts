@@ -6,7 +6,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
 	}
 
   if(to.path === "/login" && auth.userToken) {
-    if (auth.user.role === 'admin') {
+    if (auth.user.role === 'admin' || auth.user.role === 'superadmin') {
       return navigateTo('/admin');
     }
 

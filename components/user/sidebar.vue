@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 defineEmits(["close"]);
 
+const auth = useAuthStore();
+
 const route = useRoute();
 const patharray = ref(route.path.split("/"));
 </script>
@@ -50,7 +52,7 @@ const patharray = ref(route.path.split("/"));
 					><LucideUser :size="20" stroke-width="1" />Profile</NuxtLink
 				>
 			</li>
-			<li class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3 ps-8">
+			<li class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3 ps-8" @click.prevent="auth.logout()">
 				<img src="~/assets/img/icons/logout.svg" alt="logout icon" />Logout
 			</li>
 		</div>

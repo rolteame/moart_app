@@ -3,18 +3,67 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
-const showAlert = ref(true);
-const propertyImage = ref("");
-const file: Ref<File | null> = ref(null);
-const uploadLoading = ref(false);
+const config = useRuntimeConfig();
+const auth = useAuthStore();
+const route = useRoute();
 
-const uploadImage = () => {
-	console.log(file.value);
-	if (file.value === null) return
+const showAlert = ref(false);
+const propertyImage = ref("");
+const file: Ref<File | any> = ref(null);
+const uploadLoading = ref(false);
+const loading = ref(false);
+
+const { data } = await useFetch<any>(
+	`${config.public.backendUrl}/properties/${route.params.id}`,
+	{
+		headers: {
+			Authorization: `Bearer ${auth.token}`,
+		},
+		method: "GET",
+	}
+);
+propertyImage.value = data.value?.image;
+
+// const onFileChange = (e: Event) => {
+// 	const target = e.target as HTMLInputElement;
+// 	if (target.files) {
+// 		file.value = target.files[0];
+// 	}
+// };
+
+const uploadPropertyImage = async () => {
 	uploadLoading.value = true;
-	setTimeout(() => {
+
+	if (file.value === undefined) {
+		useNuxtApp().$toast.warn("Please select an image");
 		uploadLoading.value = false;
-	}, 3000);
+		return;
+	}
+
+	const propertyImageFormData = new FormData();
+	propertyImageFormData.append("image", file.value, file.value.name);
+
+	const { data, error, refresh } = await useFetch<any>(
+		`${config.public.backendUrl}/properties/upload`,
+		{
+			method: "POST",
+			body: propertyImageFormData,
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		}
+	);
+
+	if (error.value?.data.code === 401) {
+		useNuxtApp().$toast.error("Token expired, reftreshing token");
+		await auth.resetToken();
+		refresh();
+		return;
+	}
+
+	propertyImage.value = data.value.url;
+	useNuxtApp().$toast.success("Image uploaded successfully");
+	uploadLoading.value = false;
 };
 
 const formSchema = toTypedSchema(
@@ -23,19 +72,26 @@ const formSchema = toTypedSchema(
 		propertyType: z.string(),
 		propertyStatus: z.string(),
 		propertyPrice: z.number(),
-		buyinPrice: z.number(),
+		buyInPrice: z.number(),
 		interest: z.any(),
 		propertyDescription: z.string(),
 		address: z.string(),
-		availableSlots: z.any(),
+		slots: z.any(),
 	})
 );
 
 const { handleSubmit, setFieldValue } = useForm({
 	validationSchema: formSchema,
 	initialValues: {
-		interest: 0,
-		availableSlots: 0,
+		propertyName: data.value?.propertyName,
+		propertyType: data.value?.propertyType,
+		propertyStatus: data.value?.propertyStatus,
+		propertyPrice: data.value?.propertyPrice,
+		buyInPrice: data.value?.buyInPrice,
+		interest: data.value?.interest,
+		slots: data.value?.slots,
+		propertyDescription: data.value?.propertyDescription,
+		address: data.value?.address,
 	},
 });
 
@@ -43,8 +99,41 @@ const submit = () => {
 	showAlert.value = true;
 };
 
-const onSubmit = handleSubmit((values) => {
-	console.log(values);
+const onSubmit = handleSubmit(async (values) => {
+	console.log({ ...values, image: propertyImage.value });
+	loading.value = true;
+	const { data, error } = await useFetch<any>(
+		`${config.public.backendUrl}/properties/${route.params.id}`,
+		{
+			method: "PATCH",
+			body: {
+				...values,
+				image: propertyImage.value,
+			},
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		}
+	);
+
+	if (error.value?.statusCode === 401) {
+		useNuxtApp().$toast.error("Token expired, reftreshing token");
+		loading.value = false;
+		await auth.resetToken();
+		return;
+	}
+
+	if (error.value?.statusCode === 400) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		loading.value = false;
+		return;
+	}
+
+	useNuxtApp().$toast.success("Property updated successfully");
+	loading.value = false;
+	setTimeout(() => {
+		navigateTo("/admin/properties");
+	}, 5000)
 });
 </script>
 
@@ -55,7 +144,8 @@ const onSubmit = handleSubmit((values) => {
 			title="Edit Property"
 			description="Are you sure you want to edit this property"
 			@close="showAlert = false"
-      @confirm="onSubmit"
+			:loading="loading"
+			@confirm="onSubmit"
 		/>
 	</div>
 	<!--Upload Media-->
@@ -84,7 +174,7 @@ const onSubmit = handleSubmit((values) => {
 				<Button
 					type="submit"
 					class="bg-[#1B5DB1] text-white text-lg py-2 px-4 w-1/2"
-					@click="uploadImage"
+					@click="uploadPropertyImage"
 					>Upload</Button
 				>
 				<svg
@@ -92,7 +182,7 @@ const onSubmit = handleSubmit((values) => {
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
-					v-show="uploadLoading"
+					v-show="uploadLoading === true"
 				>
 					<circle
 						class="opacity-25"
@@ -158,8 +248,8 @@ const onSubmit = handleSubmit((values) => {
 						</FormControl>
 						<SelectContent>
 							<SelectGroup>
-								<SelectItem value="land"> Active </SelectItem>
-								<SelectItem value="house"> Inactive </SelectItem>
+								<SelectItem value="active"> Active </SelectItem>
+								<SelectItem value="inactive"> Inactive </SelectItem>
 							</SelectGroup>
 						</SelectContent>
 					</Select>
@@ -180,9 +270,9 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 
 			<!--Buyin Price-->
-			<FormField v-slot="{ componentField }" name="buyinPrice">
+			<FormField v-slot="{ componentField }" name="buyInPrice">
 				<FormItem class="md:w-[30%]">
-					<FormLabel>Buyin Price</FormLabel>
+					<FormLabel>Buy-in Price</FormLabel>
 					<FormControl>
 						<Input v-bind="componentField" type="number" />
 					</FormControl>
@@ -196,7 +286,7 @@ const onSubmit = handleSubmit((values) => {
 					<FormLabel for="interest">Interest</FormLabel>
 					<NumberField
 						id="interest"
-						:default-value="0"
+						:default-value="data?.interest / 100"
 						:step="0.01"
 						:format-options="{
 							style: 'percent',
@@ -251,20 +341,20 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 
 			<!--Available Slots-->
-			<FormField v-slot="{ componentField }" name="availableSlots">
+			<FormField v-slot="{ componentField }" name="slots">
 				<FormItem class="md:w-[45%]">
 					<FormLabel for="availableSlots">Available Slots</FormLabel>
 					<FormControl>
 						<NumberField
 							id="availableSlots"
-							:default-value="0"
+							:default-value="data?.slots"
 							:step="1"
 							@update:model-value="
 								(v: any) => {
 									if (v) {
-										setFieldValue('availableSlots', v);
+										setFieldValue('slots', v);
 									} else {
-										setFieldValue('availableSlots', undefined);
+										setFieldValue('slots', undefined);
 									}
 								}
 							"
@@ -283,9 +373,9 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 		</div>
 		<div class="space-x-4 flex justify-between md:justify-normal">
-			<Button type="submit" class="bg-[#1B5DB1] text-white text-lg py-2 px-4"
-				>Edit Property</Button
-			>
+			<Button type="submit" class="bg-[#1B5DB1] text-white text-lg py-2 px-4">
+				<span>Edit Property</span>
+			</Button>
 			<NuxtLink to="/admin/properties"
 				><Button class="bg-[#FC464626] text-[#E11F1F] border text-lg p-2 w-32"
 					>Cancel</Button

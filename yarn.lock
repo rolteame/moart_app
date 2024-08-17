@@ -6601,11 +6601,6 @@ vue-router@^4.3.3:
   dependencies:
     "@vue/devtools-api" "^6.5.1"
 
-vue-sonner@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/vue-sonner/-/vue-sonner-1.1.3.tgz#c4f4b8b2d9b114973f3fd360e6386b81b0298684"
-  integrity sha512-6I+5GNobKvE2nR5MPhO+T59d4j2LXRQoc/ZCmGtCoBWKDQr5nzSqjFaOOdPysHFI2p42wNLhQMafd0N540UW9Q==
-
 vue-virtual-scroller@2.0.0-beta.8:
   version "2.0.0-beta.8"
   resolved "https://registry.npmjs.org/vue-virtual-scroller/-/vue-virtual-scroller-2.0.0-beta.8.tgz"
@@ -6614,6 +6609,11 @@ vue-virtual-scroller@2.0.0-beta.8:
     mitt "^2.1.0"
     vue-observe-visibility "^2.0.0-alpha.1"
     vue-resize "^2.0.0-alpha.1"
+
+vue3-toastify@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/vue3-toastify/-/vue3-toastify-0.2.2.tgz#13884ab3ac4b797b9d751a303378fd0ead539024"
+  integrity sha512-D8pmIp2UeU8MU1OY7GktA70HviZ38b1RagN82P7tFu3abUD86w+PjfmbdRch4QVtjVxK+eqKLvi5cXJRndwJfw==
 
 vue@^3.4.29:
   version "3.4.29"

@@ -2,49 +2,58 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
-import { columns } from "~/components/user-list/columns";
-import DataTable from "~/components/user-list/DataTable.vue";
 import type { User } from "~/types/authTypes";
 
 useHead({
 	title: "Users - Admin | Moart",
 });
+const tableHeader = ["Name", "Email", "Status"];
 const data = ref<User[]>([]);
 
 const getData = async (): Promise<User[]> => {
 	return [
-	{
-		id: "728ed52f",
-		name: "Rotimi",
-		status: "pending",
-		email: "am@example.com",
-	},
-	{
-		id: "728ed52f",
-		name: "samuel",
-		status: "pending",
-		email: "m@example.com",
-	},
-	{
-		id: "728ed52f",
-		name: "sammy",
-		status: "success",
-		email: "cm@example.com",
-	},
-	{
-		id: "728ed52f",
-		name: "Rotimi",
-		status: "pending",
-		email: "am@example.com",
-	},
-	
-]
-}
+		{
+			id: "728ed52f",
+			name: "Rotimi",
+			status: "pending",
+			email: "am@example.com",
+		},
+		{
+			id: "728ed52f",
+			name: "samuel",
+			status: "pending",
+			email: "m@example.com",
+		},
+		{
+			id: "728ed52f",
+			name: "sammy",
+			status: "success",
+			email: "cm@example.com",
+		},
+		{
+			id: "728ed52f",
+			name: "Rotimi",
+			status: "pending",
+			email: "am@example.com",
+		},
+		{
+			id: "728ed52f",
+			name: "sammy",
+			status: "failed",
+			email: "cm@example.com",
+		},
+		{
+			id: "728ed52f",
+			name: "Rotimi",
+			status: "failed",
+			email: "am@example.com",
+		},
+	];
+};
 
 onMounted(async () => {
 	data.value = await getData();
-})
-
+});
 </script>
 
 <template>
@@ -128,11 +137,9 @@ onMounted(async () => {
 	<div
 		class="bg-white rounded-xl shadow-md px-4 py-3 mt-3 content-center text-[#414141A8]"
 	>
-		<template>
-			<div class="container py-10 mx-auto">
-				<DataTable :columns="columns" :data="data" />
-			</div>
-		</template>
+		<div class="container py-4 mx-auto">
+			<AdminUserTable :tableHeader="tableHeader" :users="data"/>
+		</div>
 	</div>
 </template>
 

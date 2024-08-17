@@ -9,11 +9,6 @@ const auth = useAuthStore();
 const config = useRuntimeConfig();
 
 const loading = ref(false);
-const loginSuccess = ref(false);
-const errorMessage = ref("");
-const successMessage = ref("");
-const toastTitle = ref("")
-
 
 const formSchema = toTypedSchema(
 	z.object({
@@ -46,49 +41,37 @@ const onSubmit = handleSubmit(async (values: Login) => {
 	);
 
 	if (error.value?.data.code === 401) {
-		errorMessage.value = error.value.data.message;
+		useNuxtApp().$toast.error(error.value?.data.message);
 		loading.value = false;
-		toastTitle.value = "Login Failed"
-		setTimeout(() => {
-			errorMessage.value = "";
-		}, 3000)
 		return;
 	}
-	loginSuccess.value = true;
-	toastTitle.value = "Login Successful"
-	successMessage.value = `Welcome ${data.value.user.fullName}`;
+
+	if (error.value?.statusCode === 429) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		loading.value = false;
+		return;
+	}
+
+	useNuxtApp().$toast.success("Login successful");
 	auth.isLoggedin = true;
 	auth.user = data.value.user;
 	auth.token = data.value.tokens.access.token;
-	auth.refreshToken = data.value.tokens.refresh.token
+	auth.refreshToken = data.value.tokens.refresh.token;
 
+	loading.value = false;
 	setTimeout(() => {
-		loading.value = false;
-		if (auth.user.role === "admin") {
+		if (auth.user.role === "admin" || auth.user.role === "superadmin") {
 			return navigateTo("/admin");
 		}
 
 		if (auth.user.role === "user") {
 			return navigateTo("/user-dashboard");
 		}
-	}, 3000)
+	}, 2000);
 });
 </script>
 
 <template>
-	<div
-		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
-		v-show="errorMessage || loginSuccess"
-	>
-		<Toast
-			:title="toastTitle"
-			:description="errorMessage ? errorMessage : successMessage"
-			:variant="errorMessage ? 'bg-destructive' : 'bg-success'"
-		>
-			<LucideCircleAlert v-show="errorMessage" />
-			<LucideCircleCheckBig v-show="loginSuccess" />
-		</Toast>
-	</div>
 	<form @submit.prevent="onSubmit">
 		<!--Email-->
 		<FormField v-slot="{ componentField }" name="email">
@@ -153,9 +136,32 @@ const onSubmit = handleSubmit(async (values: Login) => {
 		</FormField>
 		<div class="flex justify-center mt-14 mb-32">
 			<button
-				class="bg-[#1B5DB1] text-white py-2 px-10 rounded text-lg uppercase"
+				class="bg-[#1B5DB1] text-white py-2 px-10 rounded text-lg uppercase flex "
+				:disabled="loading === true"
 			>
-				<span v-show="loading === true">Loading ...</span>
+				<span v-show="loading === true" class="flex items-center">
+					<svg
+						class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<circle
+							class="opacity-25"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="4"
+						></circle>
+						<path
+							class="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+						></path>
+					</svg>
+					<span>Loading</span>
+				</span>
 				<span v-show="loading === false">Log in</span>
 			</button>
 		</div>

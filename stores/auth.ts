@@ -25,16 +25,67 @@ export const useAuthStore = defineStore('auth', () => {
       refreshToken.value = response.refresh.token
 
     } catch (err: any) {
+      console.log(err)
       if (err.statusCode === 401) {
-        token.value = "";
-        user.value = "";
-        refreshToken.value = "";
-        isLoggedin.value = false;
+        logout()
+        router.push("/login")
+      }
+
+      if (err.statusCode === 429) {
+        logout()
         router.push("/login")
       }
     }
     // console.log(response);
   }
+
+  const logout = async () => {
+    try {
+      const response: any = await $fetch<any>(`https://moart-backend.onrender.com/v1/auth/logout`, {
+        method: "POST",
+        body: {
+          refreshToken: refreshToken.value
+        },
+        headers: {
+          Authorization: `Bearer ${token.value}`
+        }
+      })
+  
+      useNuxtApp().$toast.success(response.message)
+      token.value = ""
+      user.value = ""
+      refreshToken.value = ""
+      isLoggedin.value = false
+      router.push("/login")
+    } catch (err: any) {
+      console.log(err)
+      if (err.statusCode === 401) {
+        token.value = ""
+        user.value = ""
+        refreshToken.value = ""
+        isLoggedin.value = false
+        router.push("/login")
+      }
+
+      if (err.statusCode === 429) {
+        useNuxtApp().$toast.error("Token expired, Kindly relogin")
+        token.value = ""
+        user.value = ""
+        refreshToken.value = ""
+        isLoggedin.value = false
+        router.push("/login")
+      }
+
+      if (err.statusCode === 404) {
+        useNuxtApp().$toast.error("Token expired, Kindly relogin")
+        token.value = ""
+        user.value = ""
+        refreshToken.value = ""
+        isLoggedin.value = false
+        router.push("/login")
+      }
+    }
+  } 
 
 
   return {
@@ -43,7 +94,8 @@ export const useAuthStore = defineStore('auth', () => {
     userToken,
     refreshToken,
     isLoggedin,
-    resetToken
+    resetToken,
+    logout
   }
 },
 {

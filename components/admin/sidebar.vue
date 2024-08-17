@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 defineEmits(["close"]);
+const auth = useAuthStore();
 
 const route = useRoute();
 const patharray = ref(route.path.split("/"));
@@ -23,7 +24,7 @@ const patharray = ref(route.path.split("/"));
 				<NuxtLink
 					to="/admin/properties/"
 					class="flex gap-3 content-center"
-					:class="{ 'text-[#1B5DB1]': patharray.includes('investments') }"
+					
 					><LucideLandmark :size="20" stroke-width="1" />Properties</NuxtLink
 				>
 			</li>
@@ -54,8 +55,8 @@ const patharray = ref(route.path.split("/"));
 					><LucideUserRoundCog :size="20" stroke-width="1" />Users</NuxtLink
 				>
 			</li>
-			<li @click="$emit('close')">
-				<NuxtLink to="/admin/team" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('Team') }"
+			<li @click="$emit('close')" v-show="auth.user.role === 'superadmin'">
+				<NuxtLink to="/admin/team" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('team') }"
 					><LucideUsers :size="20" stroke-width="1" />Team</NuxtLink
 				>
 			</li>
@@ -71,7 +72,7 @@ const patharray = ref(route.path.split("/"));
 					><LucideUser :size="20" stroke-width="1" />Profile</NuxtLink
 				>
 			</li>
-			<li class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3 ps-8">
+			<li class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3 ps-8" @click.prevent="auth.logout()">
 				<img src="~/assets/img/icons/logout.svg" alt="logout icon" />Logout
 			</li>
 		</div>

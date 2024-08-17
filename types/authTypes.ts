@@ -11,16 +11,15 @@ export interface Properties {
 	totalResults: number;
 }
 
-export interface Payment {
-  id: string
-  amount: number
-  status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
-}
-
 export interface User {
 	id: string,
 	name: string,
 	email: string,
 	status: 'pending' | 'processing' | 'success' | 'failed'
+}
+
+export interface TeamFormValues {
+	fullName: string,
+	email: string,
+	position: string,
 }

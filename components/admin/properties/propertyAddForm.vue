@@ -1,15 +1,12 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
 
 const propertyImage = ref("");
 const file: Ref<File | any> = ref();
-const loadingImage= ref(false);
-const uploadSuccess = ref(false);
-const errorMessage = ref("");
-const successMessage = ref("");
-const toastTitle = ref("")
+const uploadLoading = ref(false);
+const loading = ref(false);
 
 const config = useRuntimeConfig();
 const auth = useAuthStore();
@@ -19,38 +16,41 @@ const onFileChange = (e: Event) => {
 	if (target.files) {
 		file.value = target.files[0];
 	}
-}
+};
 
-const uploadImage = async () => {
-	loadingImage.value = true;
-	propertyImage.value = "";
+const uploadPropertyImage = async () => {
+	uploadLoading.value = true;
+
+	if (file.value === undefined) {
+		useNuxtApp().$toast.warn("Please select an image");
+		uploadLoading.value = false;
+		return;
+	}
+
 	const propertyImageFormData = new FormData();
 	propertyImageFormData.append("image", file.value, file.value.name);
-	
+
 	const { data, error } = await useFetch<any>(
-		`${config.public.backendUrl}/properties/upload`,{
+		`${config.public.backendUrl}/properties/upload`,
+		{
 			method: "POST",
 			body: propertyImageFormData,
 			headers: {
 				Authorization: `Bearer ${auth.token}`,
-			}
+			},
 		}
-	)
+	);
+
 	if (error.value?.statusCode === 401) {
-		errorMessage.value = "Upload Failed. Please try again."
-		auth.resetToken()
+		useNuxtApp().$toast.error("Token expired, reftreshing token");
+		await auth.resetToken();
+		return;
 	}
-	
-	uploadSuccess.value = true;
-	errorMessage.value = "";
-	toastTitle.value = "Property Image Uploaded";
+
 	propertyImage.value = data.value.url;
-	file.value = "";
-	setTimeout(() => {
-		loadingImage.value = false;
-		uploadSuccess.value = false;
-	}, 3000);
-}
+	useNuxtApp().$toast.success("Image uploaded successfully");
+	uploadLoading.value = false;
+};
 
 const formSchema = toTypedSchema(
 	z.object({
@@ -58,8 +58,8 @@ const formSchema = toTypedSchema(
 		propertyType: z.string(),
 		propertyStatus: z.string(),
 		propertyPrice: z.number(),
-		buyinPrice: z.number(),
-		interest: z.any().transform((value) => Number(value * 100)),
+		buyInPrice: z.number(),
+		interest: z.any().transform((value) => value * 100),
 		propertyDescription: z.string(),
 		address: z.string(),
 		slots: z.any(),
@@ -74,34 +74,49 @@ const { handleSubmit, setFieldValue } = useForm({
 	},
 });
 
-const onSubmit = handleSubmit((values) => {
-	console.log("Form Submitted", {...values, image: propertyImage.value});
-});
+const addProperty = handleSubmit(async (values) => {
+	loading.value = true;
+	const { data, error } = await useFetch<any>(
+		`${config.public.backendUrl}/properties`,
+		{
+			method: "POST",
+			body: {
+				...values,
+				image: propertyImage.value,
+			},
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		}
+	);
 
+	if (error.value?.statusCode === 401) {
+		useNuxtApp().$toast.error("Token expired, reftreshing token");
+		loading.value = false;
+		await auth.resetToken();
+		return;
+	}
+
+	if (error.value?.statusCode === 400) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		loading.value = false;
+		return;
+	}
+
+	useNuxtApp().$toast.success("Property added successfully");
+	loading.value = false;
+	navigateTo("/admin/properties");
+});
 </script>
 
 <template>
-	<!--Toast-->
-	<div
-		class="absolute top-0 right-0 animate__animated animate__fadeInDown"
-		v-show="errorMessage || uploadSuccess"
-	>
-		<Toast
-			:title="toastTitle"
-			:description="errorMessage ? errorMessage : successMessage"
-			:variant="errorMessage ? 'bg-destructive' : 'bg-success'"
-		>
-			<LucideCircleAlert v-show="errorMessage" />
-			<LucideCircleCheckBig v-show="uploadSuccess" />
-		</Toast>
-	</div>
 	<!--Upload Media-->
-	<div class="flex p-5 items-center gap-4">
+	<div class="flex md:flex-row p-5 items-center gap-4 flex-col">
 		<img
 			v-show="!propertyImage"
 			src="~/assets/img/property_bg.jpg"
 			alt="Image of Property"
-			class="border h-40 w-40 object-cover rounded-lg shadow-lg"
+			class="border h-40 w-[100%] md:w-40 object-cover rounded-lg shadow-lg"
 		/>
 		<img
 			v-show="propertyImage"
@@ -109,18 +124,13 @@ const onSubmit = handleSubmit((values) => {
 			alt="Image of Property"
 			class="border h-40 w-40 object-cover rounded-lg shadow-lg"
 		/>
-		<div class="flex flex-col gap-3">
-			<Input
-				type="file"
-				class="w-full"
-				v-model="file"
-				@change="onFileChange"
-			/>
+		<div class="flex flex-col gap-3 justify-items-start">
+			<Input type="file" class="w-full" @change="onFileChange" />
 			<div class="flex gap-4 items-center">
 				<Button
 					type="submit"
 					class="bg-[#1B5DB1] text-white text-lg py-2 px-4 w-1/2"
-					@click="uploadImage"
+					@click="uploadPropertyImage"
 					>Upload</Button
 				>
 				<svg
@@ -128,7 +138,7 @@ const onSubmit = handleSubmit((values) => {
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
-					v-if="loadingImage"
+					v-show="uploadLoading === true"
 				>
 					<circle
 						class="opacity-25"
@@ -147,8 +157,8 @@ const onSubmit = handleSubmit((values) => {
 			</div>
 		</div>
 	</div>
-	<form class="p-4 space-y-5" @submit.prevent="onSubmit">
-		<div class="md:flex justify-between">
+	<form class="w-full p-4" @submit.prevent="addProperty">
+		<div class="md:flex justify-between py-3">
 			<!--Property Name-->
 			<FormField v-slot="{ componentField }" name="propertyName">
 				<FormItem class="md:w-[30%]">
@@ -202,7 +212,7 @@ const onSubmit = handleSubmit((values) => {
 				</FormItem>
 			</FormField>
 		</div>
-		<div class="md:flex justify-between">
+		<div class="md:flex justify-between py-3">
 			<!--Property Price-->
 			<FormField v-slot="{ componentField }" name="propertyPrice">
 				<FormItem class="md:w-[30%]">
@@ -215,9 +225,9 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 
 			<!--Buyin Price-->
-			<FormField v-slot="{ componentField }" name="buyinPrice">
+			<FormField v-slot="{ componentField }" name="buyInPrice">
 				<FormItem class="md:w-[30%]">
-					<FormLabel>Buyin Price</FormLabel>
+					<FormLabel>Buy-in Price</FormLabel>
 					<FormControl>
 						<Input v-bind="componentField" type="number" />
 					</FormControl>
@@ -259,7 +269,7 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 		</div>
 		<!--Property Description-->
-		<div>
+		<div class="py-3">
 			<FormField v-slot="{ componentField }" name="propertyDescription">
 				<FormItem>
 					<FormLabel>Property Description</FormLabel>
@@ -273,7 +283,7 @@ const onSubmit = handleSubmit((values) => {
 				</FormItem>
 			</FormField>
 		</div>
-		<div class="md:flex justify-between">
+		<div class="md:flex justify-between py-3">
 			<!--Address-->
 			<FormField v-slot="{ componentField }" name="address">
 				<FormItem class="md:w-[45%]">
@@ -286,7 +296,7 @@ const onSubmit = handleSubmit((values) => {
 			</FormField>
 
 			<!--Available Slots-->
-			<FormField v-slot="{ componentField }" name="slots">
+			<FormField v-slot="{ componentField }" name="availableSlots">
 				<FormItem class="md:w-[45%]">
 					<FormLabel for="availableSlots">Available Slots</FormLabel>
 					<FormControl>
@@ -317,10 +327,32 @@ const onSubmit = handleSubmit((values) => {
 				</FormItem>
 			</FormField>
 		</div>
-		<div class="space-x-4 flex justify-between md:justify-normal">
-			<Button type="submit" class="bg-[#1B5DB1] text-white text-lg py-2 px-4"
-				>Add Property</Button
-			>
+		<div class="space-x-4 flex justify-between md:justify-normal py-3">
+			<Button type="submit" class="bg-[#1B5DB1] text-white text-lg py-2 px-4">
+				<span v-show="loading === true" class="w-34">
+					<svg
+						class="animate-spin -ml-1 mr-3 h-5 w-5 text-white w-34"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+					>
+						<circle
+							class="opacity-25"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="4"
+						></circle>
+						<path
+							class="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+						></path>
+					</svg>
+				</span>
+				<span v-show="loading === false">Add Property</span>
+			</Button>
 			<NuxtLink to="/admin/properties"
 				><Button class="bg-[#FC464626] text-[#E11F1F] border text-lg p-2 w-32"
 					>Cancel</Button
@@ -329,3 +361,5 @@ const onSubmit = handleSubmit((values) => {
 		</div>
 	</form>
 </template>
+
+<style scoped></style>
