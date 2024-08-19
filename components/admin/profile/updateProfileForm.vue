@@ -17,7 +17,7 @@ const updateProfile = async () => {
 </script>
 
 <template>
-  <div class="flex p-5 items-center gap-4">
+  <div class="flex flex-col md:flex-row p-5 items-center gap-4">
 			<img
 				v-show="!profileImage"
 				src="~/assets/img/property_bg.jpg"
