@@ -4,6 +4,66 @@ const auth = useAuthStore();
 
 const route = useRoute();
 const patharray = ref(route.path.split("/"));
+
+const logout = async () => {
+	const { data, error } = await useFetch<any>(
+		`https://moart-backend.onrender.com/v1/auth/logout`,
+		{
+			method: "POST",
+			body: {
+				refreshToken: auth.refreshToken,
+			},
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		}
+	);
+
+	if (error.value?.statusCode === 401) {
+		useNuxtApp().$toast.error("Token expired, Kindly relogin");
+		auth.token = "";
+		auth.user = "";
+		auth.refreshToken = "";
+		auth.isLoggedin = false;
+		setTimeout(() => {
+			navigateTo("/login");
+		}, 2000);
+		return;
+	}
+
+	if (error.value?.statusCode === 404) {
+		useNuxtApp().$toast.error("Token expired, Kindly relogin");
+		auth.token = "";
+		auth.user = "";
+		auth.refreshToken = "";
+		auth.isLoggedin = false;
+		setTimeout(() => {
+			navigateTo("/login");
+		}, 2000);
+		return;
+	}
+
+	if (error.value?.statusCode === 429) {
+		useNuxtApp().$toast.error("Token expired, Kindly relogin");
+		auth.token = "";
+		auth.user = "";
+		auth.refreshToken = "";
+		auth.isLoggedin = false;
+		setTimeout(() => {
+			navigateTo("/login");
+		}, 2000);
+		return;
+	}
+
+	useNuxtApp().$toast.success("Logout successful");
+	auth.token = "";
+	auth.user = "";
+	auth.refreshToken = "";
+	auth.isLoggedin = false;
+	setTimeout(() => {
+		navigateTo("/login");
+	}, 2000);
+};
 </script>
 
 <template>
@@ -16,15 +76,12 @@ const patharray = ref(route.path.split("/"));
 	<ul class="flex flex-col justify-between h-[80vh] lg:h-[77vh] font-normal">
 		<div>
 			<li @click="$emit('close')">
-				<NuxtLink to="/admin" class="flex gap-3 content-center" 
+				<NuxtLink to="/admin" class="flex gap-3 content-center"
 					><LucideLayoutGrid :size="20" stroke-width="1" />Dashboard</NuxtLink
 				>
 			</li>
 			<li @click="$emit('close')">
-				<NuxtLink
-					to="/admin/properties/"
-					class="flex gap-3 content-center"
-					
+				<NuxtLink to="/admin/properties/" class="flex gap-3 content-center"
 					><LucideLandmark :size="20" stroke-width="1" />Properties</NuxtLink
 				>
 			</li>
@@ -51,28 +108,43 @@ const patharray = ref(route.path.split("/"));
 				>
 			</li>
 			<li @click="$emit('close')">
-				<NuxtLink to="/admin/users" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('users') }"
+				<NuxtLink
+					to="/admin/users"
+					class="flex gap-3 content-center"
+					:class="{ 'text-[#1B5DB1]': patharray.includes('users') }"
 					><LucideUserRoundCog :size="20" stroke-width="1" />Users</NuxtLink
 				>
 			</li>
 			<li @click="$emit('close')" v-show="auth.user.role === 'superadmin'">
-				<NuxtLink to="/admin/team" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('team') }"
+				<NuxtLink
+					to="/admin/team"
+					class="flex gap-3 content-center"
+					:class="{ 'text-[#1B5DB1]': patharray.includes('team') }"
 					><LucideUsers :size="20" stroke-width="1" />Team</NuxtLink
 				>
 			</li>
 			<li @click="$emit('close')">
-				<NuxtLink to="/admin/notifications" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('notifications') }"
+				<NuxtLink
+					to="/admin/notifications"
+					class="flex gap-3 content-center"
+					:class="{ 'text-[#1B5DB1]': patharray.includes('notifications') }"
 					><LucideBellDot :size="20" stroke-width="1" />Notification</NuxtLink
 				>
 			</li>
 		</div>
 		<div class="mt-auto">
 			<li @click="$emit('close')">
-				<NuxtLink to="/admin/profile" class="flex gap-3 content-center" :class="{ 'text-[#1B5DB1]': patharray.includes('profile') }"
+				<NuxtLink
+					to="/admin/profile"
+					class="flex gap-3 content-center"
+					:class="{ 'text-[#1B5DB1]': patharray.includes('profile') }"
 					><LucideUser :size="20" stroke-width="1" />Profile</NuxtLink
 				>
 			</li>
-			<li class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3 ps-8" @click.prevent="auth.logout()">
+			<li
+				class="flex gap-3 content-center cursor-pointer lg:ps-14 py-3 ps-8"
+				@click.prevent="logout"
+			>
 				<img src="~/assets/img/icons/logout.svg" alt="logout icon" />Logout
 			</li>
 		</div>

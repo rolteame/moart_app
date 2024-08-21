@@ -88,7 +88,7 @@ const deleteProperty = async (propertyId: string) => {
 					<p class="lg:text-xl text-lg font-semibold">
 						{{ property?.propertyName }}
 					</p>
-					<div>
+					<div v-show="auth.user?.role === 'admin' || auth.user?.role === 'superadmin'">
 						<NuxtLink
 							:to="{
 								name: 'admin-properties-edit-property-id',
@@ -130,7 +130,7 @@ const deleteProperty = async (propertyId: string) => {
 						<span>Property Type</span
 						><span class="capitalize">{{ property?.propertyType }}</span>
 					</p>
-					<p class="flex justify-between">
+					<p class="flex justify-between" v-show="auth.user?.role === 'admin' || auth.user?.role === 'superadmin'">
 						<span>Property Status</span
 						><span
 							:class="{
@@ -146,6 +146,9 @@ const deleteProperty = async (propertyId: string) => {
 						<span>Interest</span
 						><span class="text-[#1B5DB1]">{{ property?.interest }}%</span>
 					</p>
+				</div>
+				<div class="flex justify-center pt-6" v-show="auth.user.role === 'user'">
+					<Button class="w-[60%] bg-[#1B5DB1] shadow-md text-lg">Invest</Button>
 				</div>
 			</CardContent>
 		</Card>

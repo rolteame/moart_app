@@ -135,7 +135,7 @@ onMounted(async () => {
 		</form>
 	</div>
 	<div
-		class="bg-white rounded-xl shadow-md px-4 py-3 mt-3 content-center text-[#414141A8]"
+		class="bg-white rounded-xl shadow-md py-3 mt-3 content-center text-[#414141A8]"
 	>
 		<div class="container py-4 mx-auto">
 			<AdminUserTable :tableHeader="tableHeader" :users="data"/>

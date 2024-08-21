@@ -17,7 +17,7 @@ const tableHeader = ["Refrence ID", "Transaction ID", "Name", "Email", "Amount",
 	<div
 		class="bg-white rounded-xl shadow-md py-3 mt-3 content-center text-[#414141A8]"
 	>
-		<div class="container py-4 mx-auto overflow-auto">
+		<div class="container py-4 overflow-auto">
 			<AdminTransactionsTransactionTable :tableHeader="tableHeader" />
 		</div>
 	</div>

@@ -106,9 +106,11 @@ const prevPage = async () => {
 			></NuxtLink
 		>
 	</div>
+	<!-- Analytics Section -->
 	<div>
 		<AdminPropertiesAnalytics :analytics="propertiesInfo?.analytics" />
 	</div>
+	<!-- Properties Section -->
 	<div
 		class="flex items-center h-[60%] justify-center"
 		v-if="propertiesInfo?.properties.results.length === 0"
@@ -123,6 +125,7 @@ const prevPage = async () => {
 			<AdminPropertiesPropertyCard :property="property" />
 		</div>
 	</div>
+	<!-- Pagination -->
 	<div class="flex justify-between px-3 items-center py-3">
 		<span class="text-[#4F4F4F] font-bold text-lg">
 			Page: {{ propertiesInfo?.properties.page }}
