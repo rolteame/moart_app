@@ -111,7 +111,7 @@ const deleteProperty = async (propertyId: string) => {
 			</div>
 			<CardContent>
 				<div
-					class="pt-6 px-2 lg:px-3 lg:text-xl text-md font-semibold text-[#4F4F4F]"
+					class="pt-6 lg:text-lg text-sm font-semibold text-[#4F4F4F]"
 				>
 					<p class="flex justify-between">
 						<span>Available Slot</span><span>{{ property?.slots }}</span>
@@ -148,7 +148,7 @@ const deleteProperty = async (propertyId: string) => {
 					</p>
 				</div>
 				<div class="flex justify-center pt-6" v-show="auth.user.role === 'user'">
-					<Button class="w-[60%] bg-[#1B5DB1] shadow-md text-lg">Invest</Button>
+					<Button class="w-[50%] lg:w-[60%] bg-[#1B5DB1] shadow-md text-md lg:text-lg">Invest</Button>
 				</div>
 			</CardContent>
 		</Card>

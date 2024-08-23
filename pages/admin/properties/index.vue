@@ -117,7 +117,7 @@ const prevPage = async () => {
 	>
 		No Properties Available
 	</div>
-	<div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 my-2">
+	<div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-2">
 		<div
 			v-for="property in propertiesInfo?.properties.results"
 			:key="property.id"
@@ -127,12 +127,12 @@ const prevPage = async () => {
 	</div>
 	<!-- Pagination -->
 	<div class="flex justify-between px-3 items-center py-3">
-		<span class="text-[#4F4F4F] font-bold text-lg">
+		<span class="text-[#4F4F4F] font-bold text-sm lg:text-lg">
 			Page: {{ propertiesInfo?.properties.page }}
 		</span>
 		<div class="flex gap-4">
 			<Button
-				class="w-28 bg-[#1B5DB1]"
+				class="w-18 lg:w-28 bg-[#1B5DB1]"
 				:disabled="propertiesInfo?.properties.page === 1"
 				@click="prevPage"
 				><span v-show="prevPageLoading === true" class="flex items-center">
@@ -161,7 +161,7 @@ const prevPage = async () => {
 				<span v-show="prevPageLoading === false">Prev</span></Button
 			>
 			<Button
-				class="w-28 bg-[#1B5DB1]"
+				class="w-18 lg:w-28 bg-[#1B5DB1]"
 				:disabled="
 					propertiesInfo?.properties.page ===
 					propertiesInfo?.properties.totalPages
