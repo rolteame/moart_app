@@ -52,9 +52,9 @@ loadNotifications();
 		>
 		<SheetContent side="right">
 			<div v-show="loading === true">Loading</div>
-			<div v-show="loading === false" class="mt-4">
+			<div v-show="loading === false" class="mt-4 overflow-y-scroll h-[100vh]">
 				<div v-show="notifications.length === 0">No notifications</div>
-				<div v-show="notifications.length > 0" class="overscroll-y">
+				<div v-show="notifications.length > 0">
 					<SheetHeader v-for="item in notifications" :key="item.id">
 						<div class="bg-[#1B5DB1]/20 p-1 rounded-md text-left">
 							<SheetTitle class="pb-1">{{
