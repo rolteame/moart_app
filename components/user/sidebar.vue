@@ -100,17 +100,6 @@ const logout = async () => {
 					/>Transactions</NuxtLink
 				>
 			</li>
-			<li @click="$emit('close')">
-				<NuxtLink
-					to="/user-dashboard/notifications"
-					class="flex gap-3 content-center"
-					:class="{ 'text-[#1B5DB1]': patharray.includes('notifications') }"
-					><LucideUserRoundCog
-						:size="20"
-						stroke-width="1"
-					/>Notifications</NuxtLink
-				>
-			</li>
 		</div>
 		<div class="mt-auto">
 			<li @click="$emit('close')">

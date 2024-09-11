@@ -29,60 +29,27 @@ export const useAuthStore = defineStore(
 			} catch (err: any) {
 				console.log(err);
 				if (err.statusCode === 401) {
-					logout();
+					token.value = "";
+					refreshToken.value = "";
+					user.value = "",
+					setTimeout(() => {
+						useNuxtApp().$toast.error("Token Expired, Login Again")
+					}, 3000);
 					router.push("/login");
 				}
 
 				if (err.statusCode === 429) {
-					logout();
+					token.value = "";
+					refreshToken.value = "";
+					user.value = "";
+					setTimeout(() => {
+						useNuxtApp().$toast.error("Token Expired, Login Again")
+					}, 3000);
 					router.push("/login");
 				}
 			}
-			// console.log(response);
+			
 		};
-
-		// const logout = async () => {
-		// 	try {
-				
-		// 		);
-
-		// 		if (response.status === 204) {
-		// 			useNuxtApp().$toast.success(response.message);
-		// 			token.value = "";
-		// 			user.value = "";
-		// 			refreshToken.value = "";
-		// 			isLoggedin.value = false;
-		// 			router.push("/login");
-		// 		}
-		// 	} catch (err: any) {
-		// 		console.log(err);
-		// 		if (err.statusCode === 401) {
-		// 			token.value = "";
-		// 			user.value = "";
-		// 			refreshToken.value = "";
-		// 			isLoggedin.value = false;
-		// 			router.push("/login");
-		// 		}
-
-		// 		if (err.statusCode === 429) {
-		// 			useNuxtApp().$toast.error("Token expired, Kindly relogin");
-		// 			token.value = "";
-		// 			user.value = "";
-		// 			refreshToken.value = "";
-		// 			isLoggedin.value = false;
-		// 			router.push("/login");
-		// 		}
-
-		// 		if (err.statusCode === 404) {
-		// 			useNuxtApp().$toast.error("Token expired, Kindly relogin");
-		// 			token.value = "";
-		// 			user.value = "";
-		// 			refreshToken.value = "";
-		// 			isLoggedin.value = false;
-		// 			router.push("/login");
-		// 		}
-		// 	}
-		// };
 
 		return {
 			user,
