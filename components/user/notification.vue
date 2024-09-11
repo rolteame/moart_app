@@ -60,7 +60,7 @@ loadNotifications();
 					<div v-show="notifications.length === 0">No notifications</div>
 					<div
 						v-show="notifications.length > 0"
-						class="h-[75vh] overflow-y-auto py-1"
+						class="h-[75vh] lg:h-[85vh] overflow-y-auto py-1"
 					>
 						<SheetHeader v-for="(item, index) in notifications" :key="index">
 							<div class="bg-[#1B5DB1]/20 p-1 rounded-md text-left">
