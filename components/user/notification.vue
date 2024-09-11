@@ -7,28 +7,32 @@ const unreadNotifications: Ref<any> = ref([]);
 const loading: Ref<boolean> = ref(false);
 
 const loadNotifications = async () => {
-	loading.value = true;
-	const { data, error } = await useFetch<any>(
-		`${config.public.backendUrl}/notification/${auth.user.id}`,
-		{
-			method: "GET",
-			headers: {
-				Authorization: `Bearer ${auth.token}`,
-			},
+	try {
+		loading.value = true;
+		const { data, error } = await useFetch<any>(
+			`${config.public.backendUrl}/notification/${auth.user.id}`,
+			{
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${auth.token}`,
+				},
+			}
+		);
+
+		if (error.value?.statusCode === 401) {
+			useNuxtApp().$toast.error("Token expired, refreshing token");
+			await auth.resetToken();
+			location.reload();
 		}
-	);
 
-	if (error.value?.statusCode === 401) {
-		useNuxtApp().$toast.error("Token expired, refreshing token");
-		await auth.resetToken();
-		location.reload();
+		notifications.value = data.value.results;
+		unreadNotifications.value = notifications.value.filter(
+			(item: any) => item.read === false
+		);
+		loading.value = false;
+	} catch (error) {
+		console.log(error);
 	}
-
-	notifications.value = data.value.results;
-	unreadNotifications.value = notifications.value.filter(
-		(item: any) => item.read === false
-	);
-	loading.value = false;
 };
 
 loadNotifications();
