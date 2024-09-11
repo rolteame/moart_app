@@ -27,9 +27,8 @@ const loadNotifications = async () => {
 	notifications.value = data.value.results;
 	unreadNotifications.value = notifications.value.filter(
 		(item: any) => item.read === false
-	)
+	);
 	loading.value = false;
-	console.log(notifications.value);
 };
 
 loadNotifications();
@@ -48,33 +47,47 @@ loadNotifications();
 				class="bg-red-500 text-white w-5 rounded font-bold text-base md:text-lg cursor-pointer"
 				>0</span
 			>
-			</SheetTrigger
-		>
-		<SheetContent side="right">
-			<div v-show="loading === true">Loading</div>
-			<div v-show="loading === false" class="mt-4">
-				<div v-show="notifications.length === 0">No notifications</div>
-				<div v-show="notifications.length > 0" class="h-[90vh] overflow-y-auto">
-					<SheetHeader v-for="item in notifications" :key="item.id">
-						<div class="bg-[#1B5DB1]/20 p-1 rounded-md text-left">
-							<SheetTitle class="pb-1">{{
-								item.notification.subject
-							}}</SheetTitle>
-							<SheetDescription>
-								{{ item.notification.message }}
-							</SheetDescription>
-							<div class="flex justify-end">
-								<Button class="bg-[#1B5DB1] font-light my-1 mr-1 h-8 md:h-10"
-								:class="item.read === true ? 'hidden' : 'bg-[#1B5DB1]'"
-									>Mark as read</Button
-								>
+		</SheetTrigger>
+		<SheetContent side="right" class="flex flex-col justify-between">
+			<p class="font-bold text-lg">Notifications</p>
+			<div class="h-[80vh]">
+				<div v-show="loading === true">Loading</div>
+				<div v-show="loading === false" class="mt-2">
+					<div v-show="notifications.length === 0">No notifications</div>
+					<div
+						v-show="notifications.length > 0"
+						class="h-[80vh] overflow-y-auto py-1"
+					>
+						<SheetHeader v-for="(item, index) in notifications" :key="index">
+							<div class="bg-[#1B5DB1]/20 p-1 rounded-md text-left">
+								<SheetTitle class="pb-1">{{
+									item.notification.subject
+								}}</SheetTitle>
+								<SheetDescription>
+									{{ item.notification.message }}
+								</SheetDescription>
+								<div class="flex justify-end">
+									<Button
+										class="bg-[#1B5DB1] font-light my-1 mr-1 h-8 md:h-10"
+										:class="item.read === true ? 'hidden' : 'bg-[#1B5DB1]'"
+										>Mark as read</Button
+									>
+								</div>
 							</div>
-						</div>
-						<Separator
-							
-							class="my-2"
-						/>
-					</SheetHeader>
+							<Separator
+								:class="index === notifications.length - 1 ? 'hidden' : ''"
+								class="my-2"
+							/>
+						</SheetHeader>
+					</div>
+				</div>
+			</div>
+			<div class="flex flex-col justify-end contents-end flex-end">
+				<Separator />
+				<div class="pt-2 pr-4">
+					<p class="text-base cursor-pointer text-right hover:text-[#1B5DB1]">
+						Mark all as Read
+					</p>
 				</div>
 			</div>
 		</SheetContent>

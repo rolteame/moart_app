@@ -35,7 +35,7 @@ const closeMobileNav = () => {
 		<img
 			src="~/assets/img/logo_full.png"
 			alt="Moart Logo"
-			class="w-16 lg:w-20 lg:ms-12"
+			class="w-16 lg:w-20 ms-3"
 		/>
 		<span><UserNotification /></span>
 	</div>
