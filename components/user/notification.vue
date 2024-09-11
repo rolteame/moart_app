@@ -48,15 +48,15 @@ loadNotifications();
 				>0</span
 			>
 		</SheetTrigger>
-		<SheetContent side="right" class="flex flex-col justify-between">
+		<SheetContent side="right" class="flex flex-col">
 			<p class="font-bold text-lg">Notifications</p>
-			<div class="h-[80vh]">
+			<div class="h-[85vh]">
 				<div v-show="loading === true">Loading</div>
-				<div v-show="loading === false" class="mt-2">
+				<div v-show="loading === false" class="">
 					<div v-show="notifications.length === 0">No notifications</div>
 					<div
 						v-show="notifications.length > 0"
-						class="h-[80vh] overflow-y-auto py-1"
+						class="h-[83vh] overflow-y-auto py-1"
 					>
 						<SheetHeader v-for="(item, index) in notifications" :key="index">
 							<div class="bg-[#1B5DB1]/20 p-1 rounded-md text-left">
