@@ -25,31 +25,36 @@ const loadNotifications = async () => {
 	}
 
 	notifications.value = data.value.results;
+	unreadNotifications.value = notifications.value.filter(
+		(item: any) => item.read === false
+	)
+	loading.value = false;
+	console.log(notifications.value);
 };
 
 loadNotifications();
-
-onMounted(async () => {
-	unreadNotifications.value = await notifications.value.filter(
-		(item: any) => item.read === false
-	);
-});
 </script>
 <template>
 	<Sheet>
 		<SheetTrigger class="flex items-center"
-			><LucideBell :size="20" stroke-width="1" @click="loadNotifications" />
+			><LucideBell :size="30" stroke-width="1" @click="loadNotifications" />
 			<span
 				v-show="unreadNotifications.length > 0"
-				class="bg-red-500 text-white w-5 rounded"
+				class="bg-red-500 text-white w-5 rounded font-bold text-lg cursor-pointer"
 				>{{ unreadNotifications.length }}</span
-			></SheetTrigger
+			>
+			<span
+				v-show="unreadNotifications.length === 0"
+				class="bg-red-500 text-white w-5 rounded font-bold text-lg cursor-pointer"
+				>0</span
+			>
+			</SheetTrigger
 		>
 		<SheetContent side="right">
 			<div v-show="loading === true">Loading</div>
 			<div v-show="loading === false" class="mt-4">
 				<div v-show="notifications.length === 0">No notifications</div>
-				<div v-show="notifications.length > 0">
+				<div v-show="notifications.length > 0" class="overscroll-y">
 					<SheetHeader v-for="item in notifications" :key="item.id">
 						<div class="bg-[#1B5DB1]/20 p-1 rounded-md text-left">
 							<SheetTitle class="pb-1">{{
