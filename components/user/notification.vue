@@ -37,15 +37,15 @@ loadNotifications();
 <template>
 	<Sheet>
 		<SheetTrigger class="flex items-center"
-			><LucideBell :size="30" stroke-width="1" @click="loadNotifications" />
+			><LucideBell :size="24" stroke-width="1" @click="loadNotifications" />
 			<span
 				v-show="unreadNotifications.length > 0"
-				class="bg-red-500 text-white w-5 rounded font-bold text-lg cursor-pointer"
+				class="bg-red-500 text-white w-5 rounded font-bold text-base lg:text-lg cursor-pointer"
 				>{{ unreadNotifications.length }}</span
 			>
 			<span
 				v-show="unreadNotifications.length === 0"
-				class="bg-red-500 text-white w-5 rounded font-bold text-lg cursor-pointer"
+				class="bg-red-500 text-white w-5 rounded font-bold text-base md:text-lg cursor-pointer"
 				>0</span
 			>
 			</SheetTrigger
@@ -65,6 +65,7 @@ loadNotifications();
 							</SheetDescription>
 							<div class="flex justify-end">
 								<Button class="bg-[#1B5DB1] font-light my-1 mr-1 h-8 md:h-10"
+								:class="item.read === true ? 'hidden' : 'bg-[#1B5DB1]'"
 									>Mark as read</Button
 								>
 							</div>
