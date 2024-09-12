@@ -23,3 +23,8 @@ export interface TeamFormValues {
 	email: string,
 	position: string,
 }
+
+export interface ChangePassword {
+	password: string;
+	newPassword: string;
+}
