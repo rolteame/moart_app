@@ -29,8 +29,8 @@ const loadNotifications = async () => {
 			location.reload();
 		}
 
-		notifications.value = data.value?.results;
-		unreadNotifications.value = notifications.value.filter(
+		notifications.value = data.value;
+		unreadNotifications.value = notifications.value?.results.filter(
 			(item: any) => item.read === false
 		);
 		loading.value = false;
@@ -64,7 +64,8 @@ const loadMoreNotifications = async () => {
 			location.reload();
 		}
 
-		notifications.value = [...notifications.value, ...data.value?.results];
+		notifications.value.page = data.value.page;
+		notifications.value.results = [...notifications.value.results, ...data.value.results];
 		
 		loadingMore.value = false;
 	} catch (error) {
@@ -92,18 +93,18 @@ const loadMoreNotifications = async () => {
 			<div class="h-[85vh]">
 				<div v-show="loading === true">Loading</div>
 				<div v-show="loading === false">
-					<div v-show="notifications.length === 0">No notifications</div>
+					<div v-show="notifications?.results.length === 0">No notifications</div>
 					<div
-						v-show="notifications.length > 0"
+						v-show="notifications?.results.length > 0"
 						class="h-[75vh] lg:h-[85vh] overflow-y-auto py-1"
 					>
-						<SheetHeader v-for="(item, index) of notifications" :key="item.id">
+						<SheetHeader v-for="(item, index) of notifications?.results" :key="item.id">
 							<UserNotificationItem
 								:notification="item"
 								:loadNotifications="loadNotifications"
 							/>
 							<Separator
-								:class="index === notifications.length - 1 ? 'hidden' : ''"
+								:class="index === notifications?.results.length - 1 ? 'hidden' : ''"
 								class="my-2"
 							/>
 						</SheetHeader>
@@ -115,7 +116,7 @@ const loadMoreNotifications = async () => {
 				<div class="pt-3 pr-4 flex justify-between items-center">
 					<Button
 						class="bg-[#1B5DB1] font-light w-[40%]"
-						:disabled="loadingMore === true || notifications.page === notifications.totalPages"
+						:disabled="notifications.page === notifications.totalPages"
 						@click="loadMoreNotifications"
 					>
 						<span v-show="loadingMore === true" class="w-34 flex">

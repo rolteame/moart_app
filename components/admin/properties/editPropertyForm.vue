@@ -100,7 +100,6 @@ const submit = () => {
 };
 
 const onSubmit = handleSubmit(async (values) => {
-	console.log({ ...values, image: propertyImage.value });
 	loading.value = true;
 	const { data, error } = await useFetch<any>(
 		`${config.public.backendUrl}/properties/${route.params.id}`,
@@ -155,7 +154,7 @@ const onSubmit = handleSubmit(async (values) => {
 			autoClose: true,
 			closeOnClick: true,
 			closeButton: true,
-			type: "error",
+			type: "success",
 			isLoading: false,
 		});
 	}, 2000);
@@ -167,16 +166,6 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-	<!--Alert-->
-	<div v-show="showAlert">
-		<BaseAlert
-			title="Edit Property"
-			description="Are you sure you want to edit this property"
-			@close="showAlert = false"
-			:loading="loading"
-			@confirm="onSubmit"
-		/>
-	</div>
 	<!--Upload Media-->
 	<div class="flex p-5 items-center gap-4">
 		<img
@@ -231,7 +220,7 @@ const onSubmit = handleSubmit(async (values) => {
 		</div>
 	</div>
 	<!--Edit Property-->
-	<form class="p-4 space-y-5" @submit.prevent="submit">
+	<form class="p-4 space-y-5">
 		<div class="md:flex justify-between">
 			<!--Property Name-->
 			<FormField v-slot="{ componentField }" name="propertyName">
@@ -402,9 +391,29 @@ const onSubmit = handleSubmit(async (values) => {
 			</FormField>
 		</div>
 		<div class="space-x-4 flex justify-between md:justify-normal">
-			<Button type="submit" class="bg-[#1B5DB1] text-white text-lg py-2 px-4">
-				<span>Edit Property</span>
-			</Button>
+			<AlertDialog>
+				<AlertDialogTrigger>
+					<Button type="button" class="bg-[#1B5DB1] text-white text-lg py-2">
+						<span>Edit Property</span>
+					</Button>
+				</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle> Edit Property </AlertDialogTitle>
+						<Separator />
+						<AlertDialogDescription class="py-2">
+							Are you sure you want to edit this property?
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<Separator />
+					<AlertDialogFooter class="flex justify-end items-end">
+						<AlertDialogCancel class="bg-[#E11F1F] text-white"
+							>Cancel</AlertDialogCancel
+						>
+						<AlertDialogAction @click="onSubmit">Confirm</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 			<NuxtLink to="/admin/properties"
 				><Button class="bg-[#FC464626] text-[#E11F1F] border text-lg p-2 w-32"
 					>Cancel</Button
