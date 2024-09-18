@@ -82,9 +82,10 @@ const prevPage = async () => {
 	);
 
 	if (error.value?.statusCode === 401) {
+		useNuxtApp().$toast.error("Token expired, refreshing token");
 		await auth.resetToken();
 		refresh();
-		navigateTo("/admin/properties");
+		location.reload();
 	}
 
 	useNuxtApp().$toast.success("Page loaded");
