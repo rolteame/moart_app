@@ -3,7 +3,7 @@ const auth = useAuthStore();
 const config = useRuntimeConfig();
 
 const notifications: Ref<any> = ref([]);
-const unreadNotifications: Ref<any> = ref([]);
+const unreadNotifications: Ref<any> = ref();
 const loading: Ref<boolean> = ref(false);
 const loadingMore: Ref<boolean> = ref(false);
 
@@ -29,10 +29,9 @@ const loadNotifications = async () => {
 			location.reload();
 		}
 
-		notifications.value = data.value;
-		unreadNotifications.value = notifications.value?.results.filter(
-			(item: any) => item.read === false
-		);
+		notifications.value = data.value?.notifications;
+		unreadNotifications.value = data.value?.unreadMessages;
+		console.log(unreadNotifications.value);
 		loading.value = false;
 	} catch (error) {
 		console.log(error);
@@ -64,10 +63,44 @@ const loadMoreNotifications = async () => {
 			location.reload();
 		}
 
-		notifications.value.page = data.value.page;
-		notifications.value.results = [...notifications.value.results, ...data.value.results];
-		
+		notifications.value.page = data.value?.notifications.page;
+		notifications.value.results = [
+			...notifications.value?.results,
+			...data.value?.notifications.results,
+		];
+
 		loadingMore.value = false;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+const markAllAsRead = async () => {
+	try {
+		const { data, error } = await useFetch<any>(
+			`${config.public.backendUrl}/notification/${auth.user.id}`,
+			{
+				method: "PATCH",
+				headers: {
+					Authorization: `Bearer ${auth.token}`,
+				},
+			}
+		);
+
+		if (error.value?.statusCode === 401) {
+			useNuxtApp().$toast.error("Token expired, refreshing token");
+			await auth.resetToken();
+			location.reload();
+		}
+		
+		if (error.value?.statusCode === 404) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		loading.value = false;
+		return;
+	}
+
+		useNuxtApp().$toast.success("All notifications marked as read");
+		loadNotifications();
 	} catch (error) {
 		console.log(error);
 	}
@@ -78,14 +111,8 @@ const loadMoreNotifications = async () => {
 		<SheetTrigger class="flex items-center"
 			><LucideBell :size="24" stroke-width="1" @click="loadNotifications" />
 			<span
-				v-show="unreadNotifications.length > 0"
-				class="bg-red-500 text-white w-5 rounded font-bold text-base lg:text-lg cursor-pointer"
-				>{{ unreadNotifications.length }}</span
-			>
-			<span
-				v-show="unreadNotifications.length === 0"
-				class="bg-red-500 text-white w-5 rounded font-bold text-base md:text-lg cursor-pointer"
-				>0</span
+				class="bg-red-500 text-white rounded font-bold text-base lg:text-lg cursor-pointer p-1"
+				>{{ unreadNotifications }}</span
 			>
 		</SheetTrigger>
 		<SheetContent side="right" class="flex flex-col">
@@ -93,18 +120,25 @@ const loadMoreNotifications = async () => {
 			<div class="h-[85vh]">
 				<div v-show="loading === true">Loading</div>
 				<div v-show="loading === false">
-					<div v-show="notifications?.results.length === 0">No notifications</div>
+					<div v-show="notifications?.results.length === 0">
+						No notifications
+					</div>
 					<div
 						v-show="notifications?.results.length > 0"
 						class="h-[75vh] lg:h-[85vh] overflow-y-auto py-1"
 					>
-						<SheetHeader v-for="(item, index) of notifications?.results" :key="item.id">
+						<SheetHeader
+							v-for="(item, index) of notifications?.results"
+							:key="item.id"
+						>
 							<UserNotificationItem
 								:notification="item"
 								:loadNotifications="loadNotifications"
 							/>
 							<Separator
-								:class="index === notifications?.results.length - 1 ? 'hidden' : ''"
+								:class="
+									index === notifications?.results.length - 1 ? 'hidden' : ''
+								"
 								class="my-2"
 							/>
 						</SheetHeader>
@@ -144,7 +178,7 @@ const loadMoreNotifications = async () => {
 						</span>
 						<span v-show="loadingMore === false">Load More</span>
 					</Button>
-					<p class="text-base cursor-pointer text-right hover:text-[#1B5DB1]">
+					<p class="text-base cursor-pointer text-right hover:text-[#1B5DB1]" @click="markAllAsRead">
 						Mark all as Read
 					</p>
 				</div>

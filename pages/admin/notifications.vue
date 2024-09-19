@@ -43,11 +43,17 @@ const onSubmit = handleSubmit(async (values) => {
 		return;
 	}
 
+	if (error.value?.statusCode === 404) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		loading.value = false;
+		return;
+	}
+
 	useNuxtApp().$toast.success(data.value.message);
+	values.subject = "";
+	values.message = "";
 	setTimeout(() => {
 		loading.value = false;
-		values.subject = "";
-		values.message = "";
 	}, 1000)
 })
 

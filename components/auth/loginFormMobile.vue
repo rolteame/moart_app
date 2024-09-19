@@ -126,7 +126,7 @@ const onSubmit = handleSubmit(async (values: Login) => {
 							/>
 						</span>
 					</div>
-					<NuxtLink to="#" class="text-white flex justify-end text-sm"
+					<NuxtLink to="/forgot-password" class="text-white flex justify-end text-sm"
 						>Forgot Password</NuxtLink
 					>
 				</FormControl>
