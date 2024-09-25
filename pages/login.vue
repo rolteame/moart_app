@@ -29,7 +29,7 @@ useHead({
 								Welcome Back
 							</p>
 							<div class="mt-14 w-72">
-								<AuthLoginFormDesktop />
+								<AuthLoginForm />
 							</div>
 						</div>
 					</div>
@@ -45,7 +45,7 @@ useHead({
 					</p>
 				</div>
 				<div class="pt-5 px-7">
-					<AuthLoginFormMobile />
+					<AuthLoginForm />
 					<p class="text-white text-center">
 						Don't have an account?
 						<span class="underline">

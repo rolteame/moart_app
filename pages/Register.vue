@@ -22,7 +22,7 @@ useHead({
 				Account Registration
 			</p>
 			<div class="mt-10">
-				<AuthRegisterFormDesktop />
+				<AuthRegisterForm />
 			</div>
 			<div class="pt-6">
 				<p class="font-thin">
@@ -56,7 +56,7 @@ useHead({
 					Register
 				</p>
 			</div>
-			<AuthRegisterFormMobile />
+			<AuthRegisterForm />
 			</div>
 			<div class="pt-3">
 				<p class="font-thin text-center">
