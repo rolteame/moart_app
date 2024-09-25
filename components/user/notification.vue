@@ -124,7 +124,7 @@ const markAllAsRead = async () => {
 					</div>
 					<div
 						v-show="notifications?.results.length > 0"
-						class="h-[70vh] lg:h-[85vh] overflow-y-auto py-1"
+						class="h-[75vh] lg:h-[80vh] overflow-y-auto py-1"
 					>
 						<SheetHeader
 							v-for="(item, index) of notifications?.results"
