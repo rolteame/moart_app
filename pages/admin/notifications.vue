@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { NotificationsInput } from "~/types"
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
@@ -21,7 +22,7 @@ const { handleSubmit } = useForm({
 	validationSchema: formSchema,
 });
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: NotificationsInput) => {
 	loading.value = true;
 	const { data, error, refresh } = await useFetch<any>(
 		`${useRuntimeConfig().public.backendUrl}/notification`, {

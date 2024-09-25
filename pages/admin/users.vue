@@ -2,7 +2,7 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import { z } from "zod";
-import type { User } from "~/types/authTypes";
+import type { User } from "~/types";
 
 useHead({
 	title: "Users - Admin | Moart",

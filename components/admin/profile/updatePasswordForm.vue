@@ -2,7 +2,7 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import type { ChangePassword } from "~/types/authTypes";
+import type { ChangePassword } from "~/types";
 
 const loading = ref(false);
 

@@ -2,7 +2,7 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import type { Login } from "~/types/authTypes";
+import type { ResetPasswordInput } from "~/types";
 useHead({
 	title: "Forgot Password | Moart",
 });
@@ -24,7 +24,7 @@ const { handleSubmit } = useForm({
 	validationSchema: formSchema,
 });
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values: ResetPasswordInput) => {
   try {
     loading.value = true;
     const { data, error} = await useFetch<any>(`${config.public.backendUrl}/auth/forgot-password`, {

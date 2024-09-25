@@ -31,7 +31,6 @@ const loadNotifications = async () => {
 
 		notifications.value = data.value?.notifications;
 		unreadNotifications.value = data.value?.unreadMessages;
-		console.log(unreadNotifications.value);
 		loading.value = false;
 	} catch (error) {
 		console.log(error);
@@ -117,7 +116,7 @@ const markAllAsRead = async () => {
 		</SheetTrigger>
 		<SheetContent side="right" class="flex flex-col">
 			<p class="font-bold text-lg">Notifications</p>
-			<div class="h-[85vh]">
+			<div class="h-[80vh]">
 				<div v-show="loading === true">Loading</div>
 				<div v-show="loading === false">
 					<div v-show="notifications?.results.length === 0">
@@ -125,7 +124,7 @@ const markAllAsRead = async () => {
 					</div>
 					<div
 						v-show="notifications?.results.length > 0"
-						class="h-[75vh] lg:h-[85vh] overflow-y-auto py-1"
+						class="h-[70vh] lg:h-[85vh] overflow-y-auto py-1"
 					>
 						<SheetHeader
 							v-for="(item, index) of notifications?.results"

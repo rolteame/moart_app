@@ -2,6 +2,7 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
+import type { AddPropertyInput } from "~/types";
 
 const propertyImage = ref("");
 const file: Ref<File | any> = ref();
@@ -83,7 +84,7 @@ const addProperty = handleSubmit(async (values) => {
 			body: {
 				...values,
 				image: propertyImage.value,
-			},
+			} as AddPropertyInput,
 			headers: {
 				Authorization: `Bearer ${auth.token}`,
 			},

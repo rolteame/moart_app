@@ -2,13 +2,13 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import type { Login } from "~/types/authTypes";
+import type { ChangePasswordInput } from "~/types";
 useHead({
 	title: "Forgot Password | Moart",
 });
 
 const loading: Ref<boolean> = ref(false);
-const inputType = ref("password");
+const inputType: Ref<string> = ref("password");
 
 const config = useRuntimeConfig();
 const route = useRoute();
@@ -41,12 +41,12 @@ const { handleSubmit } = useForm({
 const onSubmit = handleSubmit(async (values) => {
 	try {
 		loading.value = true;
-    const { password } = values;
+    const { password }  = values;
 		const { data, error } = await useFetch<any>(
 			`${config.public.backendUrl}/auth/reset-password`,
 			{
 				method: "POST",
-				body: { password },
+				body: { password } as ChangePasswordInput,
         query: {
           token: route.params.id
         }

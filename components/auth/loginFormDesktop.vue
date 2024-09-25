@@ -2,7 +2,7 @@
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
-import type { Login } from "~/types/authTypes";
+import type { Login } from "~/types";
 
 const inputType = ref("password");
 const auth = useAuthStore();

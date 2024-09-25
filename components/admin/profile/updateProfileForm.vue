@@ -6,6 +6,7 @@ const loading = ref(false);
 
 const config = useRuntimeConfig();
 const auth = useAuthStore();
+const user: Ref<Object> = ref(auth.user);
 
 const uploadProfileImage = async () => {
 	console.log("Uploaded");

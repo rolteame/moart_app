@@ -2,8 +2,8 @@ export const useAuthStore = defineStore(
 	"auth",
 	() => {
 		const user = ref();
-		const token = ref();
-		const refreshToken = ref();
+		const token: Ref<string> = ref("");
+		const refreshToken: Ref<string> = ref("");
 		const router = useRouter();
 
 		const isLoggedin = ref(false);
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore(
 				if (err.statusCode === 401) {
 					token.value = "";
 					refreshToken.value = "";
-					user.value = "",
+					user.value = [],
 					setTimeout(() => {
 						useNuxtApp().$toast.error("Token Expired, Login Again")
 					}, 3000);
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore(
 				if (err.statusCode === 429) {
 					token.value = "";
 					refreshToken.value = "";
-					user.value = "";
+					user.value = [];
 					setTimeout(() => {
 						useNuxtApp().$toast.error("Token Expired, Login Again")
 					}, 3000);
