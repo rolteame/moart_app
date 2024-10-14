@@ -2,11 +2,9 @@
 useHead({
 	title: "Dashboard - Admin | Moart",
 });
+
 </script>
 
 <template>
-  <div>
-    admin dashboard
-    
-  </div>
+	<div>admin dashboard</div>
 </template>

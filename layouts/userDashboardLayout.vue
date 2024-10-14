@@ -19,12 +19,22 @@ const closeMobileNav = () => {
 		);
 	}, 800);
 };
+
+// var Tawk_API: any = "6c0a22d0c9c24717dd67389729bce822485215cf";
+// var Tawk_LoadStart = new Date();
+// (function () {
+// 	var s1 = document.createElement("script");
+// 	var s0 = document.getElementsByTagName("script")[0];
+// 	s1.async = true;
+// 	s1.src = "https://embed.tawk.to/67068e3402d78d1a30eef5fc/1i9opmvn5";
+// 	s1.charset = "UTF-8";
+// 	s1.setAttribute("crossorigin", "*");
+// 	s0?.parentNode?.insertBefore(s1, s0);
+// })();
 </script>
 
 <template>
-	<div
-		class=" flex justify-between py-3 px-5 items-center z-30 top-0 bg-white"
-	>
+	<div class="flex justify-between py-3 px-5 items-center z-30 top-0 bg-white">
 		<LucideMenu
 			:size="30"
 			stroke-width="2"
@@ -35,7 +45,7 @@ const closeMobileNav = () => {
 		<img
 			src="~/assets/img/logo_full.png"
 			alt="Moart Logo"
-			class="w-16 lg:w-20 ms-3"
+			class="w-16 lg:w-20 ms-10"
 		/>
 		<span><UserNotification /></span>
 	</div>
@@ -49,7 +59,7 @@ const closeMobileNav = () => {
 	</div>
 	<div class="py-2 hidden">
 		<div class="lg:block">
-			<UserHeader/>
+			<UserHeader />
 		</div>
 	</div>
 

@@ -7,7 +7,6 @@ const config = useRuntimeConfig();
 const auth = useAuthStore();
 const route = useRoute();
 
-const showAlert = ref(false);
 const propertyImage = ref("");
 const file: Ref<File | any> = ref(null);
 const uploadLoading = ref(false);
@@ -94,10 +93,6 @@ const { handleSubmit, setFieldValue } = useForm({
 		address: data.value?.address,
 	},
 });
-
-const submit = () => {
-	showAlert.value = true;
-};
 
 const onSubmit = handleSubmit(async (values) => {
 	loading.value = true;

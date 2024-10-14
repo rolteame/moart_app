@@ -111,6 +111,7 @@ const markAllAsRead = async () => {
 			><LucideBell :size="24" stroke-width="1" @click="loadNotifications" />
 			<span
 				class="bg-red-500 text-white rounded font-bold text-base lg:text-lg cursor-pointer p-1"
+				v-show="unreadNotifications > 0"
 				>{{ unreadNotifications }}</span
 			>
 		</SheetTrigger>

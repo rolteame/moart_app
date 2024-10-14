@@ -31,38 +31,7 @@ defineProps({
 				v-if="users"
 				class="table-content"
 			>
-				<TableCell>{{ index + 1 }}</TableCell>
-				<TableCell class="font-medium">
-					{{ user.name }}
-				</TableCell>
-				<TableCell>{{ user.email }}</TableCell>
-				<TableCell
-					:class="{
-						'text-[#FF7B7B] capitalize': user.status === 'failed',
-						'text-green-600 capitalize': user.status === 'success',
-						'text-yellow-600': user.status === 'pending',
-					}"
-					>{{ user.status }}</TableCell
-				>
-				<TableCell class="text-right">
-					<DropdownMenu>
-						<DropdownMenuTrigger>
-							<LucideEllipsisVertical
-								color="#1B5DB1"
-								stroke-width="2"
-								class="ml-auto"
-							/>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent>
-							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>Profile</DropdownMenuItem>
-							<DropdownMenuItem>Billing</DropdownMenuItem>
-							<DropdownMenuItem>Team</DropdownMenuItem>
-							<DropdownMenuItem>Subscription</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</TableCell>
+				<AdminUserTableItem :user="user" :index="index" />
 			</TableRow>
 			<TableRow v-else>
 				<TableCell :colspan="tableHeader?.length" class="text-center py-10"
