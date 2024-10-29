@@ -11,7 +11,8 @@ const allProperties: Ref<any> = ref();
 const nextPageLoading: Ref<boolean> = ref(false);
 const prevPageLoading: Ref<boolean> = ref(false);
 
-const { data, error, refresh } = await useFetch<any>(
+try {
+	const { data, error, refresh } = await useFetch<any>(
 	`${config.public.backendUrl}/properties`,
 	{
 		method: "GET",
@@ -32,6 +33,9 @@ allProperties.value = data.value;
 properties.value = data.value.results.filter((property: any) => {
 	return property.propertyStatus === "active";
 });
+} catch (error) {
+	console.log(error);
+}
 
 const nextPage = async () => {
 	nextPageLoading.value = true;

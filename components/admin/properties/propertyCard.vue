@@ -119,14 +119,10 @@ const deleteProperty = async (propertyId: string) => {
 						<span>Available Slot</span><span>{{ property?.slots }}</span>
 					</p>
 					<p class="flex justify-between">
-						<span>Buy-in Price</span
-						><span class="flex justify-center items-center"
-							><img
-								class="w-4 h-4"
-								src="https://img.icons8.com/material-outlined/24/naira.png"
-								alt="naira"
-							/>{{ property?.buyInPrice }}</span
-						>
+						<span>Slot Price</span
+						><span class="flex justify-center items-center">
+							{{ auth.formatPrice.format(property?.buyInPrice) }}
+						</span>
 					</p>
 					<p class="flex justify-between">
 						<span>Property Type</span
@@ -158,7 +154,9 @@ const deleteProperty = async (propertyId: string) => {
 					class="flex justify-center pt-6"
 					v-show="auth.user.role === 'user'"
 				>
-					<Button class="w-[50%] lg:w-[60%] bg-[#1B5DB1] shadow-md text-md lg:text-lg">
+					<Button
+						class="w-[50%] lg:w-[60%] bg-[#1B5DB1] shadow-md text-md lg:text-lg"
+					>
 						<NuxtLink :to="`/user-dashboard/listings/invest/${property?.id}`"
 							>Invest</NuxtLink
 						>

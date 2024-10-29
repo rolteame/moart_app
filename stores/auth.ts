@@ -6,7 +6,13 @@ export const useAuthStore = defineStore(
 		const refreshToken: Ref<string> = ref("");
 		const router = useRouter();
 
-		const isLoggedin = ref(false);
+		const isLoggedin: Ref<boolean> = ref(false);
+
+		const formatPrice = new Intl.NumberFormat("en-US", {
+			style: "currency",
+			currency: "NGN",
+			trailingZeroDisplay: "stripIfInteger",
+		});
 
 		const userToken = computed(() => {
 			return token.value;
@@ -53,6 +59,7 @@ export const useAuthStore = defineStore(
 
 		return {
 			user,
+			formatPrice,
 			token,
 			userToken,
 			refreshToken,

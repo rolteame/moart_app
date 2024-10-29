@@ -41,6 +41,11 @@ const uploadProfileImage = async () => {
 		return;
 	}
 
+	if(error.value?.data.code === 500) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		uploadLoading.value = false;
+	}
+
 	profileImage.value = data.value.url;
 	useNuxtApp().$toast.success("Image uploaded successfully");
 	uploadLoading.value = false;
