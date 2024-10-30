@@ -5,11 +5,10 @@ import * as z from "zod";
 const config = useRuntimeConfig();
 const auth = useAuthStore();
 
-const profileImage: Ref<string> = ref(auth.user?.image || ""); ;
+const profileImage: Ref<string> = ref(auth.user?.image || "");
 const file: Ref<File | any> = ref();
 const uploadLoading: Ref<boolean> = ref(false);
 const loading: Ref<boolean> = ref(false);
-
 
 const uploadProfileImage = async () => {
 	uploadLoading.value = true;
@@ -41,7 +40,7 @@ const uploadProfileImage = async () => {
 		return;
 	}
 
-	if(error.value?.data.code === 500) {
+	if (error.value?.data.code === 500) {
 		useNuxtApp().$toast.error(error.value?.data.message);
 		uploadLoading.value = false;
 	}
@@ -89,7 +88,12 @@ const updateProfile = handleSubmit(async (values) => {
 		{
 			method: "PATCH",
 			body: {
-				...values,
+				// ...values,
+				fullName: values.fullName,
+				phoneNumber: values.phoneNumber,
+				state: values.state,
+				city: values.city,
+				country: values.country,
 				image: profileImage.value,
 			},
 			headers: {
@@ -114,7 +118,7 @@ const updateProfile = handleSubmit(async (values) => {
 	}
 
 	useNuxtApp().$toast.success("Profile updated successfully");
-	console.log(data.value);
+	auth.user = data.value.user;
 	loading.value = false;
 });
 </script>
