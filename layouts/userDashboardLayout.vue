@@ -34,7 +34,7 @@ if (auth.user.emailVerified === false) {
 			class="flex text-sm bg-red-500 rounded mx-2 mt-2 text-white items-center p-1 shadow-xl"
 			v-show="closeError === false"
 		>
-			<span class="w-[95%] text-center items-center">Please kindly verify your email, <span class="underline cursor-pointer">Click here</span> to resend verification email</span
+			<span class="w-[90%] text-center items-center">Please kindly verify your email, <span class="underline cursor-pointer">Click here</span> to resend verification email</span
 			><span
 				class="w-[5%] cursor-pointer justify-items-end px-2"
 				@click="closeError = true"
