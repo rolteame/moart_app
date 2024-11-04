@@ -176,7 +176,7 @@ const calculateReturn = handleSubmit((values) => {
 							}}</span>
 						</div>
 
-						<div class="flex flex-col lg:flex-row lg:justify-between">
+						<div class="flex flex-col lg:flex-row lg:justify-between gap-4">
 							<Button class="w-full lg:w-[40%]" type="button" @click="calculateReturn"
 								>Calculate ROI</Button
 							>
