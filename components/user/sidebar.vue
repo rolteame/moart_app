@@ -69,7 +69,7 @@ const logout = async () => {
 
 <template>
 	<div
-		class="flex cursor-pointer mb-7 mt-4 lg:hidden"
+		class="flex cursor-pointer mb-7 mt-6 lg:hidden"
 		@click="$emit('close')"
 	>
 		<LucideMoveLeft /><span>Close</span>

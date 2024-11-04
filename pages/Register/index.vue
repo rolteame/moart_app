@@ -11,7 +11,7 @@ useHead({
 			<img
 				src="~/assets/img/bg-register.png"
 				alt="Side Image"
-				class="h-max w-full register-image-radius"
+				class="h-[100vh] w-full register-image-radius"
 			/>
 		</div>
 		<div class="bg-white w-[54%] h-[100vh] px-28 pt-8">
@@ -47,16 +47,16 @@ useHead({
 		>
 			<div class="md:w-3/4 md:mx-auto">
 				<div>
-				<img
-					src="~/assets/img/logo.png"
-					alt="Moart Logo"
-					class="h-[60px] mx-auto"
-				/>
-				<p class="text-4xl pt-1 pb-8 text-white font-medium text-center">
-					Register
-				</p>
-			</div>
-			<AuthRegisterForm />
+					<img
+						src="~/assets/img/logo.png"
+						alt="Moart Logo"
+						class="h-[60px] mx-auto"
+					/>
+					<p class="text-4xl pt-1 pb-8 text-white font-medium text-center">
+						Register
+					</p>
+				</div>
+				<AuthRegisterForm />
 			</div>
 			<div class="pt-3">
 				<p class="font-thin text-center">

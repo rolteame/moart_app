@@ -47,7 +47,7 @@ const nextPage = async () => {
 				Authorization: `Bearer ${auth.token}`,
 			},
 			query: {
-				page: allProperties.value.page + 1,
+				page: allProperties.value.page + 1 || 1,
 			},
 		}
 	);
@@ -75,7 +75,7 @@ const prevPage = async () => {
 				Authorization: `Bearer ${auth.token}`,
 			},
 			query: {
-				page: allProperties.value.page - 1,
+				page: allProperties.value.page - 1 || 1,
 			},
 		}
 	);

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useForm } from "vee-validate";
+import { toTypedSchema } from "@vee-validate/zod";
+import * as z from "zod";
+
 useHead({
 	title: "Invest - Dashboard | Moart",
 });
@@ -7,6 +11,7 @@ const config = useRuntimeConfig();
 const auth = useAuthStore();
 const propertyId = useRoute().params.id;
 const property: Ref<any> = ref();
+const roi: Ref<number> = ref(0);
 
 try {
 	const { data, error } = await useFetch<any>(
@@ -33,6 +38,26 @@ try {
 } catch (error) {
 	console.log(error);
 }
+
+const formSchema = toTypedSchema(
+	z.object({
+		slotAmount: z.number(),
+		duration: z.string().transform((value) => Number(value)),
+	})
+);
+
+const { handleSubmit } = useForm({
+	validationSchema: formSchema,
+});
+
+const calculateReturn = handleSubmit((values) => {
+	const principal = ref(property.value?.buyInPrice * values.slotAmount);
+
+	roi.value =
+		(principal.value * values.duration * property.value?.interest) /
+			(12 * 100) +
+		principal.value;
+});
 </script>
 
 <template>
@@ -42,14 +67,14 @@ try {
 			:style="{ backgroundImage: `url(${property?.image})` }"
 		>
 			<div
-				class="relative w-full h-full rounded-2xl text-white p-4 flex justify-between items-end"
+				class="relative w-full h-full rounded-2xl p-4 flex justify-between items-end text-black"
 			>
-				<p class="lg:text-3xl text-2xl font-semibold w-[50%]">
+				<p class="lg:text-3xl text-2xl font-semibold w-[50%]" >
 					{{ property?.propertyName }}
 				</p>
 				<p class="w-[50%] text-end flex flex-col lg:text-lg">
 					<span>Slot Price</span
-					><span class="text-2xl">{{
+					><span class="text-xl lg:text-2xl font-semibold">{{
 						auth.formatPrice.format(property?.buyInPrice)
 					}}</span>
 				</p>
@@ -99,7 +124,7 @@ try {
 					</p>
 					<form action="" class="my-3">
 						<!--Amount of slots to invest-->
-						<FormField v-slot="{ componentField }" name="propertyType">
+						<FormField v-slot="{ componentField }" name="slotAmount">
 							<FormItem class="mb-4">
 								<Select v-bind="componentField">
 									<FormControl>
@@ -110,7 +135,11 @@ try {
 										</SelectTrigger>
 									</FormControl>
 									<SelectContent>
-										<SelectGroup v-for="slot in property?.slots">
+										<SelectGroup
+											v-for="slot in property?.slots"
+											:key="slot"
+											@change="calculateReturn"
+										>
 											<SelectItem :value="slot"> {{ slot }} </SelectItem>
 										</SelectGroup>
 									</SelectContent>
@@ -119,7 +148,7 @@ try {
 							</FormItem>
 						</FormField>
 						<!--Investment Duration-->
-						<FormField v-slot="{ componentField }" name="propertyType">
+						<FormField v-slot="{ componentField }" name="duration">
 							<FormItem class="">
 								<Select v-bind="componentField">
 									<FormControl>
@@ -142,12 +171,19 @@ try {
 						<!--ROI-->
 						<div class="flex justify-between items-center my-4">
 							<span class="font-semibold">Estimated ROI:</span>
-							<span class="text-[#1B5DB1]">{{
-								auth.formatPrice.format(300)
+							<span class="text-[#1B5DB1] font-bold text-xl">{{
+								auth.formatPrice.format(roi)
 							}}</span>
 						</div>
 
-						<Button class="w-full bg-[#1B5DB1]" type="submit">Proceed</Button>
+						<div class="flex justify-between">
+							<Button class="w-[40%]" type="button" @click="calculateReturn"
+								>Calculate ROI</Button
+							>
+							<Button class="bg-[#1B5DB1] w-[40%]" type="button"
+								>Proceed to payment</Button
+							>
+						</div>
 					</form>
 				</div>
 			</div>

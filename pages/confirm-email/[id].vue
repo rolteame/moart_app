@@ -34,7 +34,7 @@ confirmEmail();
 		v-show="loading === true"
 		class="text-center flex items-center justify-center h-screen"
 	>
-		Loading ... 
+		Loading ...
 	</p>
 	<div v-show="loading === false">
 		<AuthConfirmEmailFailed v-show="response === false" />

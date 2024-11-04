@@ -3,6 +3,8 @@ useHead({
 	title: "Dashboard - Admin | Moart",
 });
 
+const auth = useAuthStore();
+
 </script>
 
 <template>
