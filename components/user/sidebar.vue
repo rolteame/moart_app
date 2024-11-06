@@ -2,13 +2,14 @@
 defineEmits(["close"]);
 
 const auth = useAuthStore();
+const config = useRuntimeConfig();
 
 const route = useRoute();
 const patharray = ref(route.path.split("/"));
 
 const logout = async () => {
 	const { data, error } = await useFetch<any>(
-		`https://moart-backend.onrender.com/v1/auth/logout`,
+		`${config.public.backendUrl}/auth/logout`,
 		{
 			method: "POST",
 			body: {

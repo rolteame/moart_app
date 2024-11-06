@@ -63,18 +63,18 @@ const calculateReturn = handleSubmit((values) => {
 <template>
 	<div class="">
 		<div
-			class="lg:h-[400px] h-[200px] rounded-2xl bg-no-repeat bg-cover bg-center"
+			class="lg:h-[400px] h-[200px] rounded-2xl bg-no-repeat bg-cover bg-center "
 			:style="{ backgroundImage: `url(${property?.image})` }"
 		>
 			<div
-				class="relative w-full h-full rounded-2xl p-4 flex justify-between items-end text-black"
+				class="relative w-full h-full rounded-2xl p-4 flex justify-between items-end text-white bg-gradient-to-br from-[#064274CC]/30 from-20% to-[#DD9933CC]/30"
 			>
-				<p class="lg:text-3xl text-2xl font-semibold w-[50%]" >
+				<p class="2xl:text-5xl lg:text-3xl text-2xl font-semibold w-[50%]" >
 					{{ property?.propertyName }}
 				</p>
-				<p class="w-[50%] text-end flex flex-col lg:text-lg">
+				<p class="w-[50%] text-end flex flex-col lg:text-lg 2xl:text-2xl">
 					<span>Slot Price</span
-					><span class="text-xl lg:text-2xl font-semibold">{{
+					><span class="text-xl lg:text-3xl font-semibold 2xl:text-4xl">{{
 						auth.formatPrice.format(property?.buyInPrice)
 					}}</span>
 				</p>

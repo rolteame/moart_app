@@ -125,12 +125,7 @@ const updateProfile = handleSubmit(async (values) => {
 
 <template>
 	<div class="flex flex-col md:flex-row p-5 items-center gap-4">
-		<img
-			v-show="!profileImage"
-			src="~/assets/img/property_bg.jpg"
-			alt="Image of Property"
-			class="border h-40 w-40 object-cover rounded-full shadow-xl"
-		/>
+		<LucideCircleUser :size="150" stroke-width="1" v-show="!profileImage" />
 		<img
 			v-show="profileImage"
 			:src="profileImage"
