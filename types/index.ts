@@ -15,7 +15,7 @@ export interface User {
 	id: string;
 	name: string;
 	email: string;
-	status: "pending" | "processing" | "success" | "failed";
+	status: "Inactive" | "Active";
 }
 
 export interface TeamFormValues {

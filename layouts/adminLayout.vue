@@ -40,7 +40,7 @@ const closeMobileNav = () => {
 	</div>
 	<!--Mobile Nav-->
 	<div
-		class="fixed top-0 left-0 w-1/2 md:w-1/3 h-screen border bg-white z-30 animate__animated animate__slideInLeft"
+		class="fixed top-0 left-0 w-1/2 md:w-1/3 h-screen border bg-white z-30 animate__animated animate__slideInLeft lg:hidden"
 		ref="mobileNav"
 		v-show="isMobileNavOpen"
 	>

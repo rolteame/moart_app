@@ -1,12 +1,20 @@
 <script setup lang="ts">
-defineProps({
-	users: {
-		type: Array as () => any[],
-	},
+const props = defineProps({
+	// users: {
+	// 	type: Array as () => any[],
+	// },
 	tableHeader: {
 		type: Array as () => string[],
 	},
+	transactions: {
+		type: Array as () => any[],
+	},
+	userType: {
+		type: String
+	}
 });
+
+console.log(props.userType)
 </script>
 
 <template>
@@ -15,7 +23,7 @@ defineProps({
 			<TableRow class="bg-[#1B5DB1] hover:bg-[#1B5DB1]">
 				<TableHead class="text-[#D0F4FF]">No.</TableHead>
 				<TableHead
-					class="text-[#D0F4FF] header w-[500px]"
+					class="text-[#D0F4FF] header"
 					v-for="header in tableHeader"
 					:key="header"
 				>
@@ -26,46 +34,25 @@ defineProps({
 		</TableHeader>
 		<TableBody>
 			<TableRow
-				v-for="(user, index) in users"
-				:key="user.id"
-				v-if="users"
+				v-for="(transaction, index) in transactions"
+				:key="index"
+				v-if="transactions"
+				v-show="userType ==='superadmin' || userType ==='admin'"
 				class="table-content"
 			>
-				<TableCell>{{ index + 1 }}</TableCell>
-				<TableCell class="font-medium">
-					{{ user.name }}
-				</TableCell>
-				<TableCell>{{ user.email }}</TableCell>
-				<TableCell
-					:class="{
-						'text-[#FF7B7B] capitalize': user.status === 'failed',
-						'text-green-600 capitalize': user.status === 'success',
-						'text-yellow-600': user.status === 'pending',
-					}"
-					>{{ user.status }}</TableCell
-				>
-				<TableCell class="text-right">
-					<DropdownMenu>
-						<DropdownMenuTrigger>
-							<LucideEllipsisVertical
-								color="#1B5DB1"
-								stroke-width="2"
-								class="ml-auto"
-							/>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent>
-							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>Profile</DropdownMenuItem>
-							<DropdownMenuItem>Billing</DropdownMenuItem>
-							<DropdownMenuItem>Team</DropdownMenuItem>
-							<DropdownMenuItem>Subscription</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</TableCell>
+				<AdminTransactionsTransactionItem :transaction="transaction" :index="index" v-show="userType ==='superadmin'"/>
+			</TableRow>
+			<TableRow
+				v-for="(transaction, index) in transactions"
+				:key="index"
+				v-if="transactions"
+				v-show="userType ==='user'"
+				class="table-content"
+			>
+				<UserTransactionItem :transaction="transaction" :index="index" v-show="userType ==='user'" />
 			</TableRow>
 			<TableRow v-else>
-				<TableCell :colspan="tableHeader?.length + 1" class="text-center py-10"
+				<TableCell colspan="5"  class="text-center py-10"
 					>No Data</TableCell
 				>
 			</TableRow>

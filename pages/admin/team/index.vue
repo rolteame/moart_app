@@ -41,10 +41,9 @@ try {
 
 </script>
 <template>
-	<div v-if="!team">Loading</div>
+	<!-- <div v-if="!team">Loading</div> -->
 	<div
 		class="flex justify-between flex-col bg-white rounded-xl shadow-md px-4 py-3 content-center"
-		v-else
 	>
 		<p class="text-[#1B5DB1] lg:text-xl text:md my-auto font-bold">Teams</p>
 		<p class="text-[#3A3A3AA8] text-base">

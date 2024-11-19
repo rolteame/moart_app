@@ -7,6 +7,7 @@ const auth = useAuthStore();
 const config = useRuntimeConfig();
 
 const properties: Ref<any> = ref();
+const page: Ref<number> = ref(1);
 const allProperties: Ref<any> = ref();
 const nextPageLoading: Ref<boolean> = ref(false);
 const prevPageLoading: Ref<boolean> = ref(false);
@@ -39,6 +40,7 @@ properties.value = data.value.results.filter((property: any) => {
 
 const nextPage = async () => {
 	nextPageLoading.value = true;
+	page.value = allProperties.value.page ? allProperties.value.page + 1 : 1;
 	const { data, error, refresh } = await useFetch<any>(
 		`${config.public.backendUrl}/properties`,
 		{
@@ -47,7 +49,7 @@ const nextPage = async () => {
 				Authorization: `Bearer ${auth.token}`,
 			},
 			query: {
-				page: allProperties.value.page + 1 || 1,
+				page: page.value,
 			},
 		}
 	);
@@ -67,6 +69,7 @@ const nextPage = async () => {
 
 const prevPage = async () => {
 	prevPageLoading.value = true;
+	page.value = allProperties.value.page ? allProperties.value.page - 1 : 1;
 	const { data, error, refresh } = await useFetch<any>(
 		`${config.public.backendUrl}/properties`,
 		{
@@ -75,7 +78,7 @@ const prevPage = async () => {
 				Authorization: `Bearer ${auth.token}`,
 			},
 			query: {
-				page: allProperties.value.page - 1 || 1,
+				page: page.value,
 			},
 		}
 	);

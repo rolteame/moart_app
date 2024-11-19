@@ -116,7 +116,10 @@ const deleteProperty = async (propertyId: string) => {
 			<CardContent>
 				<div class="pt-6 lg:text-lg text-sm font-semibold text-[#4F4F4F]">
 					<p class="flex justify-between">
-						<span>Available Slot</span><span>{{ property?.slots }}</span>
+						<span>Total Slots</span><span>{{ property?.slots }}</span>
+					</p>
+					<p class="flex justify-between">
+						<span>Available Slot</span><span>{{ property?.availableSlot }}</span>
 					</p>
 					<p class="flex justify-between">
 						<span>Slot Price</span

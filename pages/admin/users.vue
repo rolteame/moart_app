@@ -8,52 +8,42 @@ useHead({
 	title: "Users - Admin | Moart",
 });
 const tableHeader = ["Name", "Email", "Status"];
-const data = ref<User[]>([]);
+const users = ref<User[]>([]);
 
-const getData = async (): Promise<User[]> => {
-	return [
-		{
-			id: "728ed52f",
-			name: "Rotimi",
-			status: "pending",
-			email: "am@example.com",
-		},
-		{
-			id: "728ed52f",
-			name: "samuel",
-			status: "pending",
-			email: "m@example.com",
-		},
-		{
-			id: "728ed52f",
-			name: "sammy",
-			status: "success",
-			email: "cm@example.com",
-		},
-		{
-			id: "728ed52f",
-			name: "Rotimi",
-			status: "pending",
-			email: "am@example.com",
-		},
-		{
-			id: "728ed52f",
-			name: "sammy",
-			status: "failed",
-			email: "cm@example.com",
-		},
-		{
-			id: "728ed52f",
-			name: "Rotimi",
-			status: "failed",
-			email: "am@example.com",
-		},
-	];
-};
+const auth = useAuthStore();
+const config = useRuntimeConfig();
 
-onMounted(async () => {
-	data.value = await getData();
-});
+try {
+	const { data, error, refresh} = await useFetch<any>(
+		`${config.public.backendUrl}/users`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+			query: {
+				role: "user",
+			}
+		}
+	)
+
+	if (error.value?.data.code === 401) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		await auth.resetToken();
+		refresh();
+	}
+
+	if (error.value?.data.code === 400) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+	}
+
+	if (error.value?.data.code === 500) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+	}
+
+	users.value = data.value?.results;
+} catch (error) {
+	console.log(error);
+}
 </script>
 
 <template>
@@ -65,11 +55,11 @@ onMounted(async () => {
 	<div
 		class="bg-white rounded-xl shadow-md px-4 py-3 mt-3 content-center text-[#414141A8]"
 	>
-		<form action="" class="md:grid md:grid-cols-4 justify-items-start">
+		<form action="" class="md:grid md:grid-cols-2 justify-items-center">
 			<!--Search by Users-->
 			<FormField v-slot="{ componentField }" name="search">
 				<FormItem class="w-full md:w-[90%] my-2">
-					<FormLabel class="text-lg">Search By Users</FormLabel>
+					<FormLabel class="text-lg">Search By Name or Email</FormLabel>
 					<FormControl>
 						<Input v-bind="componentField" type="text" />
 					</FormControl>
@@ -97,35 +87,6 @@ onMounted(async () => {
 					<FormMessage />
 				</FormItem>
 			</FormField>
-			<!--From Date-->
-			<FormField v-slot="{ componentField }" name="fromDate">
-				<FormItem class="flex flex-col w-full md:w-[90%] my-2">
-					<FormLabel class="text-lg">From Date</FormLabel>
-					<FormControl>
-						<input
-							class="border py-1.5 px-2 rounded"
-							v-bind="componentField"
-							type="date"
-						/>
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			</FormField>
-			<!--To Date-->
-			<FormField v-slot="{ componentField }" name="toDate">
-				<FormItem class="flex flex-col w-full md:w-[90%] my-2">
-					<FormLabel class="text-lg">To Date</FormLabel>
-					<FormControl>
-						<input
-							class="border py-1.5 px-2 rounded"
-							v-bind="componentField"
-							type="date"
-						/>
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			</FormField>
-
 			<!--Submit Button-->
 			<div class="w-full md:col-span-4 md:flex md:justify-center mt-10 mb-5">
 				<Button class="bg-[#1B5DB1] w-full md:w-[80%]"
@@ -138,7 +99,7 @@ onMounted(async () => {
 		class="bg-white rounded-xl shadow-md py-3 mt-3 content-center text-[#414141A8]"
 	>
 		<div class="container py-4 mx-auto">
-			<AdminUserTable :tableHeader="tableHeader" :users="data"/>
+			<AdminUserTable :tableHeader="tableHeader" :users="users"/>
 		</div>
 	</div>
 </template>

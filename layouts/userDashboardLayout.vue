@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 const isMobileNavOpen = ref(false);
 const mobileNav = ref();
+const config = useRuntimeConfig();
 const auth = useAuthStore();
 
 const closeError: Ref<boolean> = ref(false);
@@ -26,6 +27,35 @@ const closeMobileNav = () => {
 if (auth.user.emailVerified === false) {
 	closeError.value = false;
 }
+
+const resendEmailVerification =	async () => {
+	try {
+		const { data, error } = await useFetch<any>(
+		`${config.public.backendUrl}/auth/send-verification-email`,
+		{
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			}
+		}
+	);
+
+	if (error.value?.statusCode === 401) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		await auth.resetToken();
+		return;
+	}
+
+	if (error.value?.statusCode === 400) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		return;
+	}
+
+	useNuxtApp().$toast.success("Verification email sent");
+	} catch (error) {
+		console.log(error);
+	}
+}
 </script>
 
 <template>
@@ -34,7 +64,7 @@ if (auth.user.emailVerified === false) {
 			class="flex text-sm bg-red-500 rounded mx-2 mt-2 text-white items-center p-1 shadow-xl"
 			v-show="closeError === false"
 		>
-			<span class="w-[93%] text-center items-center">Please kindly verify your email, <span class="underline cursor-pointer">Click here</span> to resend verification email</span
+			<span class="w-[93%] text-center items-center">Please kindly verify your email, <span class="underline cursor-pointer active:decoration-black" @click="resendEmailVerification">Click here</span> to resend verification email</span
 			><span
 				class="w-[5%] cursor-pointer justify-items-end px-2"
 				@click="closeError = true"
@@ -60,7 +90,7 @@ if (auth.user.emailVerified === false) {
 		</div>
 		<!--Mobile Nav-->
 		<div
-			class="fixed top-0 left-0 w-1/2 md:w-1/3 h-screen border bg-white z-30 animate__animated animate__slideInLeft"
+			class="fixed top-0 left-0 w-1/2 md:w-1/3 h-screen border bg-white z-30 animate__animated animate__slideInLeft lg:hidden"
 			ref="mobileNav"
 			v-show="isMobileNavOpen"
 		>

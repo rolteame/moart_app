@@ -54,21 +54,21 @@ const deleteTeamMember = async (id: string, position: string) => {
 <template>
 	<div class="grid grid-cols-4 p-5">
 		<TableCell class="font-medium flex flex-col">
-			<span class="font-thick">{{ member.user.fullName }}</span>
+			<span class="font-thick">{{ member?.user?.fullName }}</span>
 			<span class="text-muted-foreground justify-items-center">{{
-				member.user.email
+				member?.user?.email
 			}}</span>
 		</TableCell>
 		<TableCell class="font-thick text-center capitalize">{{
-			member.user.role
+			member?.user?.role
 		}}</TableCell>
-		<TableCell class="font-thick">{{ member.position }}</TableCell>
+		<TableCell class="font-thick">{{ member?.position }}</TableCell>
 		<TableCell class="justify-self-center flex gap-3"
 			><LucideTrash2
 				color="red"
 				stroke-width="2"
 				class="size-5 cursor-pointer"
-				@click="deleteTeamMember(member.id, member.position)" /><span
+				@click="deleteTeamMember(member?.id, member?.position)" /><span
 				v-show="loading === true"
 				class="w-34"
 			>

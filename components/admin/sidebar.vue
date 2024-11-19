@@ -71,7 +71,7 @@ const logout = async () => {
 		class="flex cursor-pointer ms-6 mb-7 mt-4 space-x-2 lg:hidden"
 		@click="$emit('close')"
 	>
-		<LucideMoveLeft /><span>Close</span>
+		<LucideMoveLeft />
 	</div>
 	<ul class="flex flex-col justify-between h-[80vh] lg:h-[77vh] font-normal">
 		<div>
@@ -85,7 +85,7 @@ const logout = async () => {
 					><LucideLandmark :size="20" stroke-width="1" />Properties</NuxtLink
 				>
 			</li>
-			<li @click="$emit('close')">
+			<!-- <li @click="$emit('close')">
 				<NuxtLink
 					to=""
 					class="flex gap-3 content-center"
@@ -95,7 +95,7 @@ const logout = async () => {
 						stroke-width="1"
 					/>Investment</NuxtLink
 				>
-			</li>
+			</li> -->
 			<li @click="$emit('close')">
 				<NuxtLink
 					to="/admin/transactions/"
