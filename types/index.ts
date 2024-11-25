@@ -52,3 +52,31 @@ export interface AddPropertyInput {
 	slots: number;
 	image: string;
 }
+
+export interface Investment {
+	amountInvested: number;
+	createdAt: string;
+	duration: number;
+	id: string;
+	interest: number;
+	paymentStatus: string;
+	payoutAmount: number;
+	property: {
+		address: string;
+		availableSlot: number;
+		buyInPrice: number;
+		createdAt: string;
+		id: string;
+		image: string;
+		interest: number;
+		propertyDescription: string;
+		propertyName: string;
+		propertyPrice: number;
+		propertyStatus: string;
+		propertyType: string;
+		slots: number;
+	};
+	status: string;
+	transactionId: string;
+	units: number;
+}

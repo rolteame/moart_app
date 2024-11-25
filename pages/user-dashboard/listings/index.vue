@@ -117,10 +117,10 @@ const prevPage = async () => {
 			</div>
 			<div
 				v-else
-				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-2"
+				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-2 grid-flow-row"
 			>
-				<div v-for="property in properties" :key="property.id">
-					<AdminPropertiesPropertyCard :property="property" />
+				<div v-for="property in properties" :key="property.id" :class="property?.availableSlot === 0 ? 'hidden' : ''">
+					<AdminPropertiesPropertyCard :property="property"/>
 				</div>
 			</div>
 		</div>

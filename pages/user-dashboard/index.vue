@@ -4,6 +4,55 @@ useHead({
 });
 
 const auth = useAuthStore();
+const config = useRuntimeConfig();
+
+const {
+	data: investmentsInfo,
+	error,
+	refresh,
+} = await useAsyncData<any>("investmentsInfo", async () => {
+	const [activeInvestments, claimedInvestments] = await Promise.all([
+		$fetch(`${config.public.backendUrl}/investments`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+			query: {
+				user: `${auth.user.id}`,
+				sortBy: "createdAt:desc",
+				status: "ACTIVE",
+			},
+		}),
+		$fetch(`${config.public.backendUrl}/investments`, {
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+			query: {
+				user: `${auth.user.id}`,
+				sortBy: "createdAt:desc",
+				status: "CLAIMED",
+			},
+		}),
+	]);
+	return {
+		activeInvestments,
+		claimedInvestments,
+	};
+});
+
+if (error.value?.statusCode === 401) {
+	useNuxtApp().$toast.error(error.value?.message);
+	await auth.resetToken();
+	refresh();
+	location.reload();
+}
+
+if (error.value?.statusCode === 400) {
+	useNuxtApp().$toast.error(error.value?.message);
+}
+
+console.log(investmentsInfo.value);
 </script>
 
 <template>
@@ -16,11 +65,21 @@ const auth = useAuthStore();
 			</p>
 			<UserDetails />
 		</div>
-		<div class="bg-white rounded-xl shadow-md py-3 px-4 mt-3 content-center text-[#414141A8] w-full">
-			<UserDashboardActiveInvestments />
+		<div
+			class="bg-white rounded-xl shadow-md py-3 px-4 mt-3 content-center text-[#414141A8] w-full"
+		>
+			<UserDashboardShowUserInvestments
+				:investments="investmentsInfo?.activeInvestments.results"
+				header="Active Investments"
+			/>
 		</div>
-		<div class="bg-white rounded-xl shadow-md py-3 px-4 mt-3 text-[#414141A8] w-full h-max">
-			<UserDashboardActiveInvestments />
+		<div
+			class="bg-white rounded-xl shadow-md py-3 px-4 mt-3 text-[#414141A8] w-full h-max"
+		>
+			<UserDashboardShowUserInvestments
+				:investments="investmentsInfo?.claimedInvestments.results"
+				header="Claimed Investments"
+			/>
 		</div>
 	</div>
 </template>

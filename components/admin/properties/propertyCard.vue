@@ -67,7 +67,7 @@ const deleteProperty = async (propertyId: string) => {
 
 <template>
 	<div class="w-full">
-		<Card class="flex flex-col rounded-t-2xl rounded-b-lg shadow-lg">
+		<Card class="flex flex-col rounded-t-2xl rounded-b-lg shadow-lg" >
 			<div
 				class="lg:h-52 h-40 rounded-2xl bg-no-repeat bg-cover bg-center"
 				:style="{ backgroundImage: `url(${property?.image})` }"

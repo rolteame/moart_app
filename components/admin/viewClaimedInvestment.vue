@@ -96,7 +96,7 @@ try {
 							<p>
 								Duration:
 								<span class="font-semibold"
-									>{{ userInvestment?.duration }}%</span
+									>{{ userInvestment?.duration }} Months</span
 								>
 							</p>
 							<p>

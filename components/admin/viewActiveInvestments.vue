@@ -86,7 +86,7 @@ try {
 									<p>
 										Interest:
 										<span class="font-semibold"
-											>{{ userInvestment?.property.interest }} %</span
+											>{{ userInvestment?.property.interest }}%</span
 										>
 									</p>
 									<p>
@@ -105,7 +105,7 @@ try {
 										Duration:
 										<span class="font-semibold">{{
 											userInvestment?.duration
-										}}</span>
+										}} Months</span>
 									</p>
 									<p>
 										Payment Status:
