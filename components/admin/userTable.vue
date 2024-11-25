@@ -15,7 +15,7 @@ defineProps({
 			<TableRow class="bg-[#1B5DB1] hover:bg-[#1B5DB1]">
 				<TableHead class="text-[#D0F4FF]">No.</TableHead>
 				<TableHead
-					class="text-[#D0F4FF] header"
+					class="text-[#D0F4FF] header whitespace-nowrap"
 					v-for="header in tableHeader"
 					:key="header"
 				>
@@ -34,7 +34,7 @@ defineProps({
 				<AdminUserTableItem :user="user" :index="index" />
 			</TableRow>
 			<TableRow v-else>
-				<TableCell :colspan="tableHeader?.length" class="text-center py-10"
+				<TableCell :colspan="tableHeader?.length + 1" class="text-center py-10"
 					>No Data</TableCell
 				>
 			</TableRow>

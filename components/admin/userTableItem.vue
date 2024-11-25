@@ -21,22 +21,22 @@ const { user, index } = defineProps({
 	>
 	<TableCell class="text-right">
 		<DropdownMenu>
-			<DropdownMenuTrigger >
+			<DropdownMenuTrigger class="">
 				<LucideEllipsisVertical
 					color="#1B5DB1"
 					stroke-width="2"
-					class="ml-auto"
+					class="ml-auto focus:border"
 				/>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent class="flex flex-col">
+			<DropdownMenuContent class="flex flex-col test-sm space-y-1">
 				<DropdownMenuLabel>Actions</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<AdminViewActiveInvestments :userId="user.id" />
 				<AdminViewClaimedInvestment :userId="user.id" />
 				<AdminViewPendingInvestments :user-id="user.id"/>
 				<AdminViewAllTransactions :userId="user.id" />
-				<DropdownMenuItem class="text-red-600">Suspend User</DropdownMenuItem>
-				<DropdownMenuItem class="text-red-600">Delete User</DropdownMenuItem>
+				<span class="font-xs px-2 cursor-pointer text-start text-red-400 hover:text-red-600 focus:bg-red-400 focus:text-white">Suspend User</span>
+				<span class="font-xs px-2 cursor-pointer text-start text-red-600 hover:text-red-800 focus:bg-red-600 focus:text-white">Delete User</span>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	</TableCell>

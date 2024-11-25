@@ -13,8 +13,6 @@ const props = defineProps({
 		type: String
 	}
 });
-
-console.log(props.userType)
 </script>
 
 <template>
@@ -23,7 +21,7 @@ console.log(props.userType)
 			<TableRow class="bg-[#1B5DB1] hover:bg-[#1B5DB1]">
 				<TableHead class="text-[#D0F4FF]">No.</TableHead>
 				<TableHead
-					class="text-[#D0F4FF] header"
+					class="text-[#D0F4FF] header whitespace-nowrap"
 					v-for="header in tableHeader"
 					:key="header"
 				>
@@ -38,7 +36,7 @@ console.log(props.userType)
 				:key="index"
 				v-if="transactions"
 				v-show="userType ==='superadmin' || userType ==='admin'"
-				class="table-content"
+				class="table-content whitespace-nowrap"
 			>
 				<AdminTransactionsTransactionItem :transaction="transaction" :index="index" v-show="userType ==='superadmin'"/>
 			</TableRow>
@@ -47,7 +45,7 @@ console.log(props.userType)
 				:key="index"
 				v-if="transactions"
 				v-show="userType ==='user'"
-				class="table-content"
+				class="table-content whitespace-nowrap"
 			>
 				<UserTransactionItem :transaction="transaction" :index="index" v-show="userType ==='user'" />
 			</TableRow>

@@ -9,7 +9,6 @@ const config = useRuntimeConfig();
 const router = useRouter();
 
 const loading = ref(false);
-const showAlert = ref(false);
 
 const deleteProperty = async (propertyId: string) => {
 	loading.value = true;
@@ -67,15 +66,6 @@ const deleteProperty = async (propertyId: string) => {
 </script>
 
 <template>
-	<div v-show="showAlert">
-		<BaseAlert
-			title="Edit Property"
-			description="Are you sure you want to edit this property"
-			@close="showAlert = false"
-			:loading="loading"
-			@confirm="deleteProperty"
-		/>
-	</div>
 	<div class="w-full">
 		<Card class="flex flex-col rounded-t-2xl rounded-b-lg shadow-lg">
 			<div

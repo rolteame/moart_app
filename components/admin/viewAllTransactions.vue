@@ -1,9 +1,5 @@
 <script setup lang="ts">
 import moment from "moment";
-import { toTypedSchema } from "@vee-validate/zod";
-import { useForm } from "vee-validate";
-import { h } from "vue";
-import * as z from "zod";
 
 const auth = useAuthStore();
 const config = useRuntimeConfig();
@@ -26,6 +22,7 @@ try {
 			},
 			query: {
 				user: `${props.userId}`,
+				sortBy: "createdAt:desc",
 			},
 		}
 	);
@@ -45,17 +42,13 @@ try {
 	console.log(error);
 }
 
-const formSchema = toTypedSchema(
-	z.object({
-		filter: z.string(),
-	})
-);
+const filter = async (value: string) => {
+	const queryParams: any = {
+		user: `${props.userId}`,
+		sortBy: "createdAt:desc"
+	}
 
-const { handleSubmit } = useForm({
-	validationSchema: formSchema,
-});
-
-const filter = handleSubmit(async (values) => {
+	if (value !== "ALL") queryParams.status = value
 	try {
 		loading.value = true;
 		const { data, error } = await useFetch<any>(
@@ -65,10 +58,7 @@ const filter = handleSubmit(async (values) => {
 				headers: {
 					Authorization: `Bearer ${auth.token}`,
 				},
-				query: {
-					user: `${props.userId}`,
-					status: `${values.filter}`,
-				},
+				query: queryParams,
 			}
 		);
 
@@ -89,7 +79,7 @@ const filter = handleSubmit(async (values) => {
 	} catch (error) {
 		console.log(error);
 	}
-});
+};
 </script>
 
 <template>
@@ -99,18 +89,21 @@ const filter = handleSubmit(async (values) => {
 		>
 			<span class="font-lg px-2">View All Transactions</span>
 		</AlertDialogTrigger>
-		<AlertDialogContent class="py-2 text-xl">
+		<AlertDialogContent class="py-1 text-xl">
+			<AlertDialogCancel class="border-none flex justify-self-end"
+				><LucideX color="red"
+			/></AlertDialogCancel>
 			<AlertDialogHeader>
-				<AlertDialogTitle class="text-sm px-2">
+				<AlertDialogTitle class="text-sm px-1">
 					<p class="flex justify-between items-end">
 						<span>All Transactions</span>
 						<span>
-							<form class="w-2/3 flex items-center" @submit.prevent="filter">
-								<FormField v-slot="{ componentField }" name="filter">
-									<FormItem class="flex items-center me-2 w-full">
+							<form class="flex items-center">
+								<FormField name="filter">
+									<FormItem class="flex items-center me-1">
 										<!-- <FormLabel>Filter</FormLabel> -->
 
-										<Select v-bind="componentField">
+										<Select @update:model-value="filter">
 											<FormControl>
 												<SelectTrigger>
 													<SelectValue placeholder="Choose a Filter" />
@@ -118,6 +111,7 @@ const filter = handleSubmit(async (values) => {
 											</FormControl>
 											<SelectContent>
 												<SelectGroup>
+													<SelectItem value="ALL" class=""> ALL </SelectItem>
 													<SelectItem value="SUCCESS" class="text-green-600">
 														Success
 													</SelectItem>
@@ -132,47 +126,19 @@ const filter = handleSubmit(async (values) => {
 										</Select>
 									</FormItem>
 								</FormField>
-
-								<Button
-									type="submit"
-									class="bg-[#1B5DB1] text-white text-sm py-2 px-4"
-								>
-									<span v-show="loading === true" class="w-34">
-										<svg
-											class="animate-spin -ml-1 mr-3 h-5 w-5 text-white w-34"
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-										>
-											<circle
-												class="opacity-25"
-												cx="12"
-												cy="12"
-												r="10"
-												stroke="currentColor"
-												stroke-width="4"
-											></circle>
-											<path
-												class="opacity-75"
-												fill="currentColor"
-												d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-											></path>
-										</svg>
-									</span>
-									<span v-show="loading === false">Filter</span>
-								</Button>
 							</form>
 						</span>
 					</p>
 				</AlertDialogTitle>
 				<Separator />
 				<AlertDialogDescription>
-					<div class="overflow-y-auto h-[70vh]">
+					<div v-show="loading === true" class="text-center h-[70vh] flex items-center"><span>Loading</span></div>
+					<div class="overflow-y-auto h-[70vh]" v-show="loading === false">
 						<div
 							class="border rounded my-1.5 p-2"
 							v-for="transaction in transactions"
 							:key="transaction.id"
-							v-if="transactions"
+							v-if="transactions?.length > 0"
 						>
 							<p>
 								Reference ID:
@@ -211,9 +177,7 @@ const filter = handleSubmit(async (values) => {
 							<p>
 								Date:
 								<span class="font-semibold text-[#1B5DB1]">{{
-									moment(transaction.createdAt).format(
-										"LLL"
-									)
+									moment(transaction.createdAt).format("LLL")
 								}}</span>
 							</p>
 						</div>
@@ -226,13 +190,8 @@ const filter = handleSubmit(async (values) => {
 					</div>
 				</AlertDialogDescription>
 			</AlertDialogHeader>
-			<AlertDialogFooter>
-				<AlertDialogCancel class="bg-red-500 text-white"
-					>Cancel</AlertDialogCancel
-				>
-			</AlertDialogFooter>
 		</AlertDialogContent>
 	</AlertDialog>
 </template>
 
-<style scoped></style>
+

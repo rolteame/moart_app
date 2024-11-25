@@ -21,6 +21,7 @@ try {
 			},
 			query: {
 				user: `${props.userId}`,
+				sortBy: "createdAt:desc",
         status: "CLAIMED"
 			},
 		}
@@ -48,6 +49,7 @@ try {
       <span class="font-lg px-2">View Claimed Investments</span>
     </AlertDialogTrigger>
 		<AlertDialogContent class="py-2 text-xl">
+			<AlertDialogCancel class="border-none flex justify-self-end"><LucideX color="red" /></AlertDialogCancel>
 			<AlertDialogHeader>
 				<AlertDialogTitle class="text-sm px-2"
 					>Active Investment Details</AlertDialogTitle
@@ -59,7 +61,7 @@ try {
 							class="border rounded my-1.5 p-2"
 							v-for="userInvestment in userInvestments"
               :key="userInvestment.id"
-              v-if="userInvestments"
+              v-if="userInvestments?.length > 0"
 						>
 							<p>
 								Property Name:
@@ -113,7 +115,7 @@ try {
 								Investment Status:
 								<span class="font-semibold"
                 :class="{
-										'text-[#FF7B7B] capitalize': userInvestment.status === 'CLAIMED',
+										'text-green-500 capitalize': userInvestment.status === 'CLAIMED',
 										'text-green-600 capitalize': userInvestment.status === 'ACTIVE',
 										'text-yellow-600': userInvestment.status === 'PENDING',
 									}"
@@ -129,16 +131,11 @@ try {
 							</p>
 						</div>
             <div class="h-[70vh] w-full flex items-center justify-center" v-else>
-              <p class="text-lg font-semibold">No Active Investments</p>
+              <p class="text-lg font-semibold">No Claimed Investments</p>
             </div>
 					</div>
 				</AlertDialogDescription>
 			</AlertDialogHeader>
-			<AlertDialogFooter>
-				<AlertDialogCancel class="bg-red-500 text-white"
-					>Cancel</AlertDialogCancel
-				>
-			</AlertDialogFooter>
 		</AlertDialogContent>
 	</AlertDialog>
 </template>

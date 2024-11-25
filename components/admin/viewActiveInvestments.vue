@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import moment from "moment"
+import moment from "moment";
 
 const auth = useAuthStore();
 const config = useRuntimeConfig();
@@ -21,7 +21,8 @@ try {
 			},
 			query: {
 				user: `${props.userId}`,
-        status: "ACTIVE"
+				sortBy: "createdAt:desc",
+				status: "ACTIVE",
 			},
 		}
 	);
@@ -44,10 +45,15 @@ try {
 
 <template>
 	<AlertDialog>
-		<AlertDialogTrigger class="text-start hover:text-[#1B5DB1] focus:bg-[#1B5DB1] focus:text-white">
-      <span class="font-lg px-2 text-start">View Active Investments</span>
-    </AlertDialogTrigger>
+		<AlertDialogTrigger
+			class="text-start hover:text-[#1B5DB1] focus:bg-[#1B5DB1] focus:text-white"
+		>
+			<span class="font-lg px-2 text-start">View Active Investments</span>
+		</AlertDialogTrigger>
 		<AlertDialogContent class="py-2 text-xl">
+			<AlertDialogCancel class="border-none flex justify-self-end"
+				><LucideX color="red"
+			/></AlertDialogCancel>
 			<AlertDialogHeader>
 				<AlertDialogTitle class="text-sm px-2"
 					>Active Investment Details</AlertDialogTitle
@@ -56,89 +62,183 @@ try {
 				<AlertDialogDescription>
 					<div class="overflow-y-auto h-[70vh]">
 						<div
-							class="border rounded my-1.5 p-2"
-							v-for="userInvestment in userInvestments"
-              :key="userInvestment.id"
-              v-if="userInvestments"
+							class=""
+							v-if="userInvestments?.length > 0"
 						>
-							<p>
-								Property Name:
-								<span class="font-semibold">{{
-									userInvestment?.property.propertyName
-								}}</span>
-							</p>
-							<p>
-								Property Type:
-								<span class="font-semibold">{{
-									userInvestment?.property.propertyType
-								}}</span>
-							</p>
-							<p>
-								Interest:
-								<span class="font-semibold"
-									>{{ userInvestment?.property.interest }} %</span
-								>
-							</p>
-							<p>
-								Amount Invested:
-								<span class="font-semibold text-[#1B5DB1]">{{
-									auth.formatPrice.format(userInvestment?.amountInvested)
-								}}</span>
-							</p>
-							<p>
-								Expected Return:
-								<span class="font-semibold text-[#1B5DB1]">{{
-									auth.formatPrice.format(userInvestment?.payoutAmount)
-								}}</span>
-							</p>
-							<p>
-								Duration:
-								<span class="font-semibold"
-									>{{ userInvestment?.duration }}</span
-								>
-							</p>
-							<p>
-								Payment Status:
-								<span
-									class="font-semibold"
-									:class="{
-										'text-[#FF7B7B] capitalize': userInvestment.paymentStatus === 'DECLINED',
-										'text-green-600 capitalize': userInvestment.paymentStatus === 'SUCCESS',
-										'text-yellow-600': userInvestment.paymentStatus === 'PENDING',
-									}"
-									>{{ userInvestment?.paymentStatus }}</span
-								>
-							</p>
-							<p>
-								Investment Status:
-								<span class="font-semibold"
-                :class="{
-										'text-[#FF7B7B] capitalize': userInvestment.status === 'CLAIMED',
-										'text-green-600 capitalize': userInvestment.status === 'ACTIVE',
-										'text-yellow-600': userInvestment.status === 'PENDING',
-									}"
-                >{{
-									userInvestment?.status
-								}}</span>
-							</p>
-              <p>
-								Date/Time Created:
-								<span class="font-semibold"
-									>{{ moment(userInvestment?.createdAt).format("LLL") }}</span
-								>
-							</p>
+							<div
+								class="flex border rounded my-1.5 p-2 justify-between"
+								v-for="userInvestment in userInvestments"
+								:key="userInvestment.id"
+							>
+								<div>
+									<p>
+										Property Name:
+										<span class="font-semibold">{{
+											userInvestment?.property.propertyName
+										}}</span>
+									</p>
+									<p>
+										Property Type:
+										<span class="font-semibold">{{
+											userInvestment?.property.propertyType
+										}}</span>
+									</p>
+									<p>
+										Interest:
+										<span class="font-semibold"
+											>{{ userInvestment?.property.interest }} %</span
+										>
+									</p>
+									<p>
+										Amount Invested:
+										<span class="font-semibold text-[#1B5DB1]">{{
+											auth.formatPrice.format(userInvestment?.amountInvested)
+										}}</span>
+									</p>
+									<p>
+										Expected Return:
+										<span class="font-semibold text-[#1B5DB1]">{{
+											auth.formatPrice.format(userInvestment?.payoutAmount)
+										}}</span>
+									</p>
+									<p>
+										Duration:
+										<span class="font-semibold">{{
+											userInvestment?.duration
+										}}</span>
+									</p>
+									<p>
+										Payment Status:
+										<span
+											class="font-semibold"
+											:class="{
+												'text-[#FF7B7B] capitalize':
+													userInvestment.paymentStatus === 'DECLINED',
+												'text-green-600 capitalize':
+													userInvestment.paymentStatus === 'SUCCESS',
+												'text-yellow-600':
+													userInvestment.paymentStatus === 'PENDING',
+											}"
+											>{{ userInvestment?.paymentStatus }}</span
+										>
+									</p>
+									<p>
+										Investment Status:
+										<span
+											class="font-semibold"
+											:class="{
+												'text-green-500 capitalize':
+													userInvestment.status === 'CLAIMED',
+												'text-green-600 capitalize':
+													userInvestment.status === 'ACTIVE',
+												'text-yellow-600': userInvestment.status === 'PENDING',
+											}"
+											>{{ userInvestment?.status }}</span
+										>
+									</p>
+									<p>
+										Date/Time Created:
+										<span class="font-semibold">{{
+											moment(userInvestment?.createdAt).format("LLL")
+										}}</span>
+									</p>
+								</div>
+								<!--Update Investment TO ADD Check Number-->
+								<div class="flex flex-col gap-2 px-2">
+									<AlertDialog>
+										<AlertDialogTrigger class="active:outline-none" as-child>
+											<LucideSquarePen color="#1B5DB1" class="cursor-pointer" />
+										</AlertDialogTrigger>
+										<AlertDialogContent>
+											<AlertDialogHeader>
+												<AlertDialogTitle class="text-sm"
+													>Update Investment</AlertDialogTitle
+												>
+												<Separator />
+												<AlertDialogDescription class="py-2">
+													<Label class="py-2 text-black"
+														>Enter Check Number :</Label
+													>
+													<Input type="text" class="my-2" />
+												</AlertDialogDescription>
+												<AlertDialogFooter>
+													<AlertDialogAction class="bg-[#1B5DB1] text-white"
+														>Add Check Number</AlertDialogAction
+													>
+													<AlertDialogCancel class="bg-[#E11F1F] text-white"
+														>Cancel</AlertDialogCancel
+													>
+												</AlertDialogFooter>
+											</AlertDialogHeader>
+										</AlertDialogContent>
+									</AlertDialog>
+									<AlertDialog>
+										<AlertDialogTrigger class="active:outline-none" as-child>
+											<LucideCheckCircle color="green" class="cursor-pointer" />
+										</AlertDialogTrigger>
+										<AlertDialogContent>
+											<AlertDialogHeader>
+												<AlertDialogTitle class="text-sm"
+													>Update Investment</AlertDialogTitle
+												>
+												<Separator />
+												<AlertDialogDescription class="py-2">
+													<form>
+														<FormField
+															v-slot="{ componentField }"
+															name="InvestmentStatus"
+														>
+															<FormItem>
+																<FormLabel class="text-black"
+																	>Change Investment Status :</FormLabel
+																>
+
+																<Select v-bind="componentField">
+																	<FormControl>
+																		<SelectTrigger>
+																			<SelectValue
+																				placeholder="Select Status"
+																			/>
+																		</SelectTrigger>
+																	</FormControl>
+																	<SelectContent>
+																		<SelectGroup>
+																			<SelectItem
+																				value="CLAIMED"
+																				class="text-green-600 hover:text-text-green-600"
+																			>
+																				Claimed
+																			</SelectItem>
+																		</SelectGroup>
+																	</SelectContent>
+																</Select>
+															</FormItem>
+														</FormField>
+													</form>
+												</AlertDialogDescription>
+												<AlertDialogFooter>
+													<AlertDialogAction class="bg-[#1B5DB1] text-white"
+														>Change Status</AlertDialogAction
+													>
+													<AlertDialogCancel class="bg-[#E11F1F] text-white"
+														>Cancel</AlertDialogCancel
+													>
+												</AlertDialogFooter>
+											</AlertDialogHeader>
+										</AlertDialogContent>
+									</AlertDialog>
+								</div>
+							</div>
 						</div>
-            <div class="h-[70vh] w-full flex items-center justify-center" v-else>
-              <p class="text-lg font-semibold">No Active Investments</p>
-            </div>
+						<div
+							class="h-[70vh] w-full flex items-center justify-center"
+							v-else
+						>
+							<p class="text-lg font-semibold">No Active Investments</p>
+						</div>
 					</div>
 				</AlertDialogDescription>
 			</AlertDialogHeader>
-			<AlertDialogFooter>
-				<AlertDialogCancel class="bg-red-500 text-white"
-					>Cancel</AlertDialogCancel
-				>
-			</AlertDialogFooter>
 		</AlertDialogContent>
 	</AlertDialog>
 </template>

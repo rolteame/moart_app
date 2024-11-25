@@ -58,6 +58,7 @@ const nextPage = async () => {
 			query: {
 				page: page.value,
 				sortBy: "createdAt:desc",
+				user: `${auth.user.id}`,
 			},
 		}
 	);
@@ -87,6 +88,7 @@ const prevPage = async () => {
 			query: {
 				page: page.value,
 				sortBy: "createdAt:desc",
+				user: `${auth.user.id}`,
 			},
 		}
 	);
@@ -124,6 +126,7 @@ const prevPage = async () => {
 					:transactions="transactions"
 				/>
 			</div>
+			<!-- Pagination -->
 			<div class="flex justify-end px-3 items-center py-3 mx-4">
 				
 				<div class="flex gap-4">

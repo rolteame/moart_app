@@ -16,6 +16,7 @@ defineProps({
 			></AlertDialogTrigger
 		>
 		<AlertDialogContent class="py-2 text-xl">
+			<AlertDialogCancel class="border-none flex justify-self-end"><LucideX color="red" /></AlertDialogCancel>
 			<AlertDialogHeader>
 				<AlertDialogTitle>Transaction Details</AlertDialogTitle>
 				<Separator />
@@ -50,11 +51,6 @@ defineProps({
 					</p>
 				</AlertDialogDescription>
 			</AlertDialogHeader>
-			<AlertDialogFooter>
-				<AlertDialogCancel class="bg-red-500 text-white"
-					>Cancel</AlertDialogCancel
-				>
-			</AlertDialogFooter>
 		</AlertDialogContent>
 	</AlertDialog>
 </template>

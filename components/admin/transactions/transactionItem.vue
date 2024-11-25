@@ -15,14 +15,14 @@ const auth = useAuthStore();
 </script>
 
 <template>
-	<TableCell>{{ index + 1 }}</TableCell>
-	<TableCell class="">
+	<TableCell class="white-space-nowrap">{{ index + 1 }}</TableCell>
+	<TableCell class="white-space-nowrap">
 		{{ transaction?.id }}
 	</TableCell>
-	<TableCell>{{ transaction?.transactionId }}</TableCell>
-	<TableCell>{{ transaction?.user.fullName }}</TableCell>
-	<TableCell>{{ transaction?.user.email }}</TableCell>
-	<TableCell class="text-[#1B5DB1] font-semibold">{{
+	<TableCell class="white-space-nowrap">{{ transaction?.transactionId }}</TableCell>
+	<TableCell class="white-space-nowrap">{{ transaction?.user.fullName }}</TableCell>
+	<TableCell class="white-space-nowrap">{{ transaction?.user.email }}</TableCell>
+	<TableCell class="text-[#1B5DB1] font-semibold whitespace-nowrap">{{
 		auth.formatPrice.format(transaction?.amount)
 	}}</TableCell>
 	<TableCell
@@ -31,10 +31,11 @@ const auth = useAuthStore();
 			'text-green-600 capitalize': transaction?.status === 'SUCCESS',
 			'text-yellow-600': transaction?.status === 'PENDING',
 		}"
+		class="white-space-nowrap"
 		>{{ transaction?.status }}</TableCell
 	>
 	<TableCell
-		><span class="font-semibold text-[#1B5DB1]">{{
+		><span class="font-semibold text-[#1B5DB1] white-space-nowrap">{{
 			moment(transaction?.createdAt).format("LLL")
 		}}</span></TableCell
 	>
