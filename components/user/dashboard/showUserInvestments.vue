@@ -11,6 +11,8 @@ defineProps({
 		type: String,
 	},
 });
+
+const auth = useAuthStore();
 </script>
 
 <template>
@@ -49,13 +51,13 @@ defineProps({
 							<p class="lg:text-lg text-sm font-semibold text-[#4F4F4F]">
 								Amount Invested:
 								<span class="text-[#1B5DB1]">{{
-									investment?.amountInvested
+									auth.formatPrice.format(investment?.amountInvested)
 								}}</span>
 							</p>
 							<p class="lg:text-lg text-sm font-semibold text-[#4F4F4F]">
 								Expected Return:
 								<span class="text-green-600">{{
-									investment?.payoutAmount
+                  auth.formatPrice.format(investment?.payoutAmount)
 								}}</span>
 							</p>
 							<p class="lg:text-lg text-sm font-semibold text-[#4F4F4F]">

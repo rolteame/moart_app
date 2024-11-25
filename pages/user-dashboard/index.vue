@@ -52,7 +52,6 @@ if (error.value?.statusCode === 400) {
 	useNuxtApp().$toast.error(error.value?.message);
 }
 
-console.log(investmentsInfo.value);
 </script>
 
 <template>
