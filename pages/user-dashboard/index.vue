@@ -21,7 +21,7 @@ const {
 				user: `${auth.user.id}`,
 				sortBy: "createdAt:desc",
 				status: "ACTIVE",
-				limit: 2,
+				limit: 3,
 			},
 		}),
 		$fetch(`${config.public.backendUrl}/investments`, {

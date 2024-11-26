@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import logo from "~/assets/img/logo.png";
 import moment from "moment";
 import type { Investment } from "~/types";
 
@@ -25,7 +24,7 @@ const status = props.header === "Active Investments" ? "ACTIVE" : "CLAIMED";
 	<div>
 		<p class="lg:text-xl text:md my-auto font-bold">{{ header }}</p>
 		<div class="flex justify-between items-center">
-			<ScrollArea class="w-full whitespace-nowrap">
+			<ScrollArea class="w-full whitespace-nowrap ">
 				<div class="flex py-3 space-x-4 w-max">
 					<div
 						v-for="investment in investments"
