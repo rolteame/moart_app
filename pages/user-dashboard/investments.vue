@@ -1,21 +1,23 @@
 <script lang="ts" setup>
 useHead({
-	title: "Transactions - Dashboard | Moart",
+	title: "Investments - Dashboard | Moart",
 });
 
-const tableHeader = ["Refrence ID", "Transaction ID", "Amount", "Status"];
+const tableHeader = ["Property Name", "Property Type", "interest", "Amount Invested", "Expected Return", "Duration", "Date Created", "Withdrawal Date"];
 
 const auth = useAuthStore();
 const config = useRuntimeConfig();
-const transactions = ref([]);
-const allTransactions = ref();
+const route = useRoute();
+
+const allUserInvestments = ref();
+const userInvestments = ref();
 const nextPageLoading: Ref<boolean> = ref(false);
 const prevPageLoading: Ref<boolean> = ref(false);
 const page: Ref<number> = ref(1);
 
-try {
-	const { data, error, refresh } = await useFetch<any>(
-		`${config.public.backendUrl}/payments`,
+  try {
+	const { data, error } = await useFetch<any>(
+		`${config.public.backendUrl}/investments`,
 		{
 			method: "GET",
 			headers: {
@@ -24,30 +26,30 @@ try {
 			query: {
 				user: `${auth.user.id}`,
 				sortBy: "createdAt:desc",
+        status: `${route.query.status}`
 			},
 		}
 	);
 
-	if (error.value?.statusCode === 401) {
+	if (error.value?.data.code === 401) {
 		useNuxtApp().$toast.error(error.value?.data.message);
 		await auth.resetToken();
-		refresh();
 		location.reload();
 	}
 
-	if (error.value?.statusCode === 400) {
+	if (error.value?.data.code === 400) {
 		useNuxtApp().$toast.error(error.value?.data.message);
 	}
 
-	transactions.value = data.value.results;
-	allTransactions.value = data.value;
+	userInvestments.value = data.value?.results;
+  allUserInvestments.value = data.value;
 } catch (error) {
 	console.log(error);
 }
 
 const nextPage = async () => {
 	nextPageLoading.value = true;
-	page.value = allTransactions.value.page ? allTransactions.value.page + 1 : 1;
+	page.value = allUserInvestments.value?.page ? allUserInvestments.value?.page + 1 : 1;
 	const { data, error, refresh } = await useFetch<any>(
 		`${config.public.backendUrl}/payments`,
 		{
@@ -69,15 +71,15 @@ const nextPage = async () => {
 		location.reload();
 	}
 
-	transactions.value = data.value.results;
-	allTransactions.value = data.value;
+	userInvestments.value = data.value.results;
+	allUserInvestments.value = data.value;
 	useNuxtApp().$toast.success("Page loaded");
 	nextPageLoading.value = false;
 };
 
 const prevPage = async () => {
 	prevPageLoading.value = true;
-	page.value = allTransactions?.value.page ? allTransactions?.value.page - 1 : 1;
+	page.value = allUserInvestments?.value?.page ? allUserInvestments?.value?.page - 1 : 1;
 	const { data, error, refresh } = await useFetch<any>(
 		`${config.public.backendUrl}/payments`,
 		{
@@ -99,10 +101,11 @@ const prevPage = async () => {
 		location.reload();
 	}
 
-	transactions.value = data.value.results;
-	allTransactions.value = data.value;
+	userInvestments.value = data.value.results;
+	allUserInvestments.value = data.value;
 	useNuxtApp().$toast.success("Page loaded");
 	prevPageLoading.value = false;
+  console.log(allUserInvestments.value);
 };
 </script>
 
@@ -112,7 +115,7 @@ const prevPage = async () => {
 			class="flex justify-between bg-white rounded-xl shadow-md px-4 py-3 content-center"
 		>
 			<p class="text-[#1B5DB1] lg:text-xl text:md my-auto font-bold">
-				Transactions
+				{{ route.query.status === "ACTIVE" ? "Active Investments" : "Claimed Investments" }}
 			</p>
 			<UserDetails />
 		</div>
@@ -120,10 +123,10 @@ const prevPage = async () => {
 			class="bg-white rounded-xl shadow-md py-3 mt-3 content-center text-[#414141A8]"
 		>
 			<div class="container py-4 overflow-auto">
-				<AdminTransactionsTransactionTable
+				<UserInvestmentTable
 					:tableHeader="tableHeader"
-					userType="user"
-					:transactions="transactions"
+					userType="investment"
+					:userInvestments="userInvestments"
 				/>
 			</div>
 			<!-- Pagination -->
@@ -132,7 +135,7 @@ const prevPage = async () => {
 				<div class="flex gap-4">
 					<Button
 						class="w-18 lg:w-28 bg-[#1B5DB1]"
-						:disabled="allTransactions?.page === 1"
+						:disabled="allUserInvestments?.page === 1"
 						@click="prevPage"
 						><span v-show="prevPageLoading === true" class="flex items-center">
 							<svg
@@ -161,7 +164,7 @@ const prevPage = async () => {
 					>
 					<Button
 						class="w-18 lg:w-28 bg-[#1B5DB1]"
-						:disabled="allTransactions?.page === allTransactions?.totalPages"
+						:disabled="allUserInvestments?.page === allUserInvestments?.totalPages"
 						@click="nextPage"
 					>
 						<span v-show="nextPageLoading === true" class="flex items-center">

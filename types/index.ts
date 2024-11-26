@@ -79,4 +79,5 @@ export interface Investment {
 	status: string;
 	transactionId: string;
 	units: number;
+	payoutDate: number,
 }

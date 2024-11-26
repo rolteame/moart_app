@@ -21,6 +21,7 @@ const {
 				user: `${auth.user.id}`,
 				sortBy: "createdAt:desc",
 				status: "ACTIVE",
+				limit: 2,
 			},
 		}),
 		$fetch(`${config.public.backendUrl}/investments`, {
@@ -32,6 +33,7 @@ const {
 				user: `${auth.user.id}`,
 				sortBy: "createdAt:desc",
 				status: "CLAIMED",
+				limit: 3,
 			},
 		}),
 	]);
@@ -70,6 +72,7 @@ if (error.value?.statusCode === 400) {
 			<UserDashboardShowUserInvestments
 				:investments="investmentsInfo?.activeInvestments.results"
 				header="Active Investments"
+				:total-results="investmentsInfo?.activeInvestments.totalResults"
 			/>
 		</div>
 		<div
@@ -78,6 +81,7 @@ if (error.value?.statusCode === 400) {
 			<UserDashboardShowUserInvestments
 				:investments="investmentsInfo?.claimedInvestments.results"
 				header="Claimed Investments"
+				:total-results="investmentsInfo?.claimedInvestments.totalResults"
 			/>
 		</div>
 	</div>

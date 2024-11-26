@@ -6,12 +6,9 @@ const props = defineProps({
 	tableHeader: {
 		type: Array as () => string[],
 	},
-	transactions: {
+	userInvestments: {
 		type: Array as () => any[],
 	},
-	userType: {
-		type: String
-	}
 });
 </script>
 
@@ -27,27 +24,16 @@ const props = defineProps({
 				>
 					{{ header }}
 				</TableHead>
-        <!-- <TableHead></TableHead> -->
+        <TableHead></TableHead>
 			</TableRow>
 		</TableHeader>
 		<TableBody>
 			<TableRow
-				v-for="(transaction, index) in transactions"
+				v-for="(userInvestment, index) in userInvestments"
 				:key="index"
-				v-if="transactions"
-				v-show="userType ==='superadmin' || userType ==='admin'"
-				class="table-content whitespace-nowrap"
+				v-if="userInvestments"				class="table-content whitespace-nowrap"
 			>
-				<AdminTransactionsTransactionItem :transaction="transaction" :index="index" v-show="userType ==='superadmin'"/>
-			</TableRow>
-			<TableRow
-				v-for="(transaction, index) in transactions"
-				:key="index"
-				v-if="transactions"
-				v-show="userType ==='user'"
-				class="table-content whitespace-nowrap"
-			>
-				<UserTransactionItem :transaction="transaction" :index="index" v-show="userType ==='user'" />
+				<UserInvestmentItem :userInvestment="userInvestment" :index="index"/>
 			</TableRow>
 			<TableRow v-else>
 				<TableCell colspan="5"  class="text-center py-10"

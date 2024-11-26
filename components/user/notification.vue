@@ -37,7 +37,9 @@ const loadNotifications = async () => {
 	}
 };
 
-loadNotifications();
+onMounted(() => {
+	loadNotifications();
+});
 
 const loadMoreNotifications = async () => {
 	try {
