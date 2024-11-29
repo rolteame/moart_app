@@ -89,7 +89,8 @@ const status = props.header === "Active Investments" ? "ACTIVE" : "CLAIMED";
 			</ScrollArea>
 			<div class="w-[20%] flex flex-col justify-center items-center cursor-pointer" v-if="totalResults >= 2">
 				<NuxtLink :to="`/user-dashboard/investments?status=${status}`">
-          <LucideArrowRightCircle :size="70" stroke-width="1" class="mx-4" />
+          <LucideArrowRightCircle :size="70" stroke-width="1" class="mx-4 hidden lg:block"s />
+          <LucideArrowRightCircle :size="40" stroke-width="1" class="mx-4 lg:hidden" />
           <p class="text-center">View More</p>
         </NuxtLink>
 			</div>

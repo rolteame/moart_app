@@ -27,7 +27,7 @@ const props = defineProps({
 				>
 					{{ header }}
 				</TableHead>
-        <!-- <TableHead></TableHead> -->
+        <TableHead></TableHead>
 			</TableRow>
 		</TableHeader>
 		<TableBody>

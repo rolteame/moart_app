@@ -24,14 +24,15 @@ const props = defineProps({
 				>
 					{{ header }}
 				</TableHead>
-        <TableHead></TableHead>
+        <!-- <TableHead></TableHead> -->
 			</TableRow>
 		</TableHeader>
 		<TableBody>
 			<TableRow
 				v-for="(userInvestment, index) in userInvestments"
 				:key="index"
-				v-if="userInvestments"				class="table-content whitespace-nowrap"
+				v-if="userInvestments"
+				class="table-content whitespace-nowrap text-center"
 			>
 				<UserInvestmentItem :userInvestment="userInvestment" :index="index"/>
 			</TableRow>
@@ -50,10 +51,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.header:last-child {
-	text-align: right;
-}
-
 .table-content:nth-child(odd) {
 	background-color: #1b5db11a;
 }

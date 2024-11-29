@@ -8,25 +8,21 @@ const response = ref();
 const route = useRoute();
 const config = useRuntimeConfig();
 
-const confirmEmail = async () => {
-	loading.value = true;
-	const { data, error }: any = await useFetch(
-		`${config.public.backendUrl}/auth/verify-email`,
-		{
-			method: "POST",
-			query: { token: route.params.id },
-		}
-	);
-
-	if (error.value.data.code === 401) {
-		response.value = false;
-		loading.value = false;
-		return;
+loading.value = true;
+const { data, error }: any = await useFetch(
+	`${config.public.backendUrl}/auth/verify-email`,
+	{
+		method: "POST",
+		query: { token: route.params.id },
 	}
-	response.value = true;
-};
+);
 
-confirmEmail();
+if (error.value.data.code === 401) {
+	response.value = false;
+	loading.value = false;
+}
+
+response.value = true;
 </script>
 
 <template>
