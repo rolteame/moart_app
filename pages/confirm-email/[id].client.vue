@@ -14,7 +14,10 @@ const { data, error }: any = await useFetch(
 	{
 		method: "POST",
 		query: { token: route.params.id },
-	}
+		headers: {
+			Authorization: `Bearer ${route.params.id}`,
+		}
+	},
 );
 
 if (error.value.data.code === 401) {
