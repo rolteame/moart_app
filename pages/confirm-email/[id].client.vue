@@ -15,9 +15,6 @@ const confirmEmail = async () => {
 		{
 			method: "POST",
 			query: { token: route.params.id },
-			headers: {
-				Authorization: `Bearer ${route.params.id}`,
-			},
 		}
 	);
 
