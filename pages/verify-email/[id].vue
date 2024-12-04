@@ -23,8 +23,7 @@ const email = route.params.id as string;
 				<div class="text-center py-5 px-3" >
 					<h3 class="text-[#1B5DB1] text-3xl font-semibold pb-3">Verify your email</h3>
 					<p>
-						Almost there we’ve sent you a verification email to
-						{{ email }}
+						Almost there we’ve sent you a verification email
 					</p>
 					<!-- <p>You need to verify your email address to log in</p> -->
 				</div>

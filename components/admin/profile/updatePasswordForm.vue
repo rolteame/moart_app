@@ -123,11 +123,6 @@ const changePassword = handleSubmit( async (values: ChangePassword) => {
 				</span>
 				<span v-show="loading === false">Update Password</span>
 			</Button>
-			<NuxtLink to="/admin/properties"
-				><Button class="bg-[#FC464626] text-[#E11F1F] border text-lg p-2 w-32"
-					>Cancel</Button
-				></NuxtLink
-			>
 		</div>
 	</form>
 </template>

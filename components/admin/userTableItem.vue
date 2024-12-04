@@ -14,9 +14,10 @@ const { user, index } = defineProps({
 	<TableCell
 		:class="{
 			'text-[#FF7B7B] capitalize': user.status === 'Inactive',
-			'text-green-600 capitalize': user.status === 'Active',
-			'text-yellow-600': user.status === 'pending',
+			'text-green-600 capitalize': user.status === 'ACTIVE' || user.status === 'Active',
+			'text-red-600': user.status === 'DELETED',
 		}"
+		class="capitalize"
 		>{{ user.status }}</TableCell
 	>
 	<TableCell class="text-right">

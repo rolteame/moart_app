@@ -14,6 +14,10 @@ export const useAuthStore = defineStore(
 			trailingZeroDisplay: "stripIfInteger",
 		});
 
+		const formatPriceInMetics = new Intl.NumberFormat("en-US", {
+			trailingZeroDisplay: "stripIfInteger",
+		});
+
 		const userToken = computed(() => {
 			return token.value;
 		});
@@ -64,6 +68,7 @@ export const useAuthStore = defineStore(
 			userToken,
 			refreshToken,
 			isLoggedin,
+			formatPriceInMetics,
 			resetToken,
 		};
 	},

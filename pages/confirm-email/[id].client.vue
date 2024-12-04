@@ -29,7 +29,9 @@ const confirmEmail = async () => {
 	response.value = true;
 };
 
-confirmEmail();
+onMounted(() => {
+	confirmEmail();
+});
 </script>
 
 <template>

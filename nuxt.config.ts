@@ -15,6 +15,7 @@ export default defineNuxtConfig({
 		"@pinia/nuxt",
 		"@pinia-plugin-persistedstate/nuxt",
 	],
+	// plugins: ['~/plugins/vue3-toastify.client.js'],
 	css: ["animate.css/animate.min.css"],
 	shadcn: {
 		/**

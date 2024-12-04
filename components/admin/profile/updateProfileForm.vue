@@ -286,11 +286,6 @@ const updateProfile = handleSubmit(async (values) => {
 				</span>
 				<span v-show="loading === false">Update Profile</span>
 			</Button>
-			<NuxtLink to="/admin/properties"
-				><Button class="bg-[#FC464626] text-[#E11F1F] border text-lg p-2 w-32"
-					>Cancel</Button
-				></NuxtLink
-			>
 		</div>
 	</form>
 </template>
