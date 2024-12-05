@@ -44,6 +44,7 @@ metrics.value = data.value;
 		class="flex justify-between bg-white rounded-xl shadow-md px-4 py-3 content-center"
 	>
 		<p class="text-[#1B5DB1] lg:text-xl text:md my-auto font-bold">Dashboard</p>
+		
 	</div>
 	<div
 		class="bg-white rounded-xl shadow-md p-3 mt-3 content-center text-[#414141A8]"

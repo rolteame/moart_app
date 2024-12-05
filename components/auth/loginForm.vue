@@ -46,6 +46,12 @@ const onSubmit = handleSubmit(async (values: Login) => {
 		return;
 	}
 
+	if (error.value?.data.code === 400) {
+		useNuxtApp().$toast.error(error.value?.data.message);
+		loading.value = false;
+		return;
+	}
+	
 	if (error.value?.statusCode === 429) {
 		useNuxtApp().$toast.error(error.value?.data.message);
 		loading.value = false;

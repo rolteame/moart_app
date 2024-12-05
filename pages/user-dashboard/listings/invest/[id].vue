@@ -62,6 +62,11 @@ const calculateReturn = handleSubmit((values) => {
 });
 
 const proceedToPayment = handleSubmit(async (values) => {
+	if(auth.user.status === "SUSPENDED") {
+		useNuxtApp().$toast.error("Your account has been suspended, contact support");
+		return;
+	}
+
 	loading.value = true;
 
 	const { data, error, refresh } = await useFetch<any>(

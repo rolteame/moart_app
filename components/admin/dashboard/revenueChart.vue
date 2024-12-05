@@ -1,18 +1,24 @@
 <script setup lang="ts">
-defineProps({
+  type Data = {
+    name: string;
+    "Total Invested": number;
+    "Total Claimed": number;
+  };
+const props = defineProps({
 	metrics: Object,
 });
 
 const auth = useAuthStore();
+
 </script>
 
 <template>
 	<div class="py-3 mx-3">
 		<BarChart
-    :data="metrics?.monthlydata"
+    :data="metrics?.monthlydata as Data[]"
     index="name"
     :rounded-corners=4
-    :categories="['totalInvested', 'totalMatured']"
+    :categories="['Total Invested', 'Total Claimed']"
     :y-formatter="(tick, i) => {
       return typeof tick === 'number'
         ? `${new Intl.NumberFormat('en-US', {
