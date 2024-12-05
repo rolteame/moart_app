@@ -48,7 +48,19 @@ metrics.value = data.value;
 	<div
 		class="bg-white rounded-xl shadow-md p-3 mt-3 content-center text-[#414141A8]"
 	>
-		<p class="font-semibold text-xl">Investment Metrics</p>
+		<p class="font-semibold text-xl mx-3">Investment Metrics</p>
 		<AdminDashboardInvestmentMetrics :metrics="metrics" />
+	</div>
+	<div
+		class="bg-white rounded-xl shadow-md p-3 mt-3 content-center text-[#414141A8]"
+	>
+		<p class="font-semibold text-xl mx-3">Users Metrics</p>
+		<AdminDashboardUsersMetrics :metrics="metrics" />
+	</div>
+	<div
+		class="bg-white rounded-xl shadow-md p-3 mt-3 content-center text-[#414141A8]"
+	>
+		<p class="font-semibold text-xl mx-3">Monthly Revenue</p>
+		<AdminDashboardRevenueChart :metrics="metrics" />
 	</div>
 </template>

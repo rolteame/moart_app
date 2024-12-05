@@ -10,59 +10,59 @@ const router = useRouter();
 
 const loading = ref(false);
 
-const deleteProperty = async (propertyId: string) => {
-	loading.value = true;
-	try {
-		const { data, error, refresh } = await useFetch<any>(
-			`${config.public.backendUrl}/properties/${propertyId}`,
-			{
-				method: "DELETE",
-				body: property,
-				headers: {
-					Authorization: `Bearer ${auth.token}`,
-				},
-			}
-		);
+// const deleteProperty = async (propertyId: string) => {
+// 	loading.value = true;
+// 	try {
+// 		const { data, error, refresh } = await useFetch<any>(
+// 			`${config.public.backendUrl}/properties/${propertyId}`,
+// 			{
+// 				method: "DELETE",
+// 				body: property,
+// 				headers: {
+// 					Authorization: `Bearer ${auth.token}`,
+// 				},
+// 			}
+// 		);
 
-		const toastId = useNuxtApp().$toast.loading("Deleting property...");
+// 		const toastId = useNuxtApp().$toast.loading("Deleting property...");
 
-		if (error.value?.statusCode === 401) {
-			await auth.resetToken();
-			refresh();
-			return;
-		}
+// 		if (error.value?.statusCode === 401) {
+// 			await auth.resetToken();
+// 			refresh();
+// 			return;
+// 		}
 
-		if (error.value?.statusCode === 400) {
-			setTimeout(() => {
-				useNuxtApp().$toast.update(toastId, {
-					render: error.value?.data.message,
-					autoClose: true,
-					closeOnClick: true,
-					closeButton: true,
-					type: "error",
-					isLoading: false,
-				});
-			}, 2000);
-			return;
-		}
+// 		if (error.value?.statusCode === 400) {
+// 			setTimeout(() => {
+// 				useNuxtApp().$toast.update(toastId, {
+// 					render: error.value?.data.message,
+// 					autoClose: true,
+// 					closeOnClick: true,
+// 					closeButton: true,
+// 					type: "error",
+// 					isLoading: false,
+// 				});
+// 			}, 2000);
+// 			return;
+// 		}
 
-		setTimeout(() => {
-			useNuxtApp().$toast.update(toastId, {
-				render: "Property deleted successfully",
-				autoClose: true,
-				closeOnClick: true,
-				closeButton: true,
-				type: "success",
-				isLoading: false,
-			});
-		}, 3000);
-		setTimeout(() => {
-			location.reload();
-		}, 3000);
-	} catch (error) {
-		console.log(error);
-	}
-};
+// 		setTimeout(() => {
+// 			useNuxtApp().$toast.update(toastId, {
+// 				render: "Property deleted successfully",
+// 				autoClose: true,
+// 				closeOnClick: true,
+// 				closeButton: true,
+// 				type: "success",
+// 				isLoading: false,
+// 			});
+// 		}, 3000);
+// 		setTimeout(() => {
+// 			location.reload();
+// 		}, 3000);
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// };
 </script>
 
 <template>
@@ -93,13 +93,13 @@ const deleteProperty = async (propertyId: string) => {
 								stroke-width="1"
 								class="mb-2 cursor-pointer"
 						/></NuxtLink>
-						<LucideTrash2
+						<!-- <LucideTrash2
 							:size="25"
 							stroke-width="1"
 							color="red"
 							class="cursor-pointer"
 							@click.prevent="deleteProperty(property?.id)"
-						/>
+						/> -->
 					</div>
 				</div>
 			</div>

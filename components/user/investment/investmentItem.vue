@@ -18,10 +18,10 @@ const auth = useAuthStore();
 <template>
 	<TableCell class="table-content">{{  index + 1 }}</TableCell>
 	<TableCell class="table-content">
-		{{ userInvestment?.property.propertyName }}
+		{{ userInvestment?.property?.propertyName }}
 	</TableCell>
-	<TableCell class="table-content">{{ userInvestment?.property.propertyType }}</TableCell>
-	<TableCell class="table-content">{{ userInvestment?.property.interest }} %</TableCell>
+	<TableCell class="table-content">{{ userInvestment?.property?.propertyType }}</TableCell>
+	<TableCell class="table-content">{{ userInvestment?.property?.interest }} %</TableCell>
 	<TableCell
 		class="table-content text-[#1B5DB1] font-semibold"
 		>{{ auth.formatPrice.format(userInvestment?.amountInvested) }}</TableCell
