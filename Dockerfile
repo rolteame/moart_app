@@ -18,6 +18,4 @@ ENV PORT=$PORT
 ENV NODE_ENV=production
 ENV BACKEND_URL='https://moart-backend.onrender.com/v1'
 
-COPY --from=build /app/.output /app/.output
-
 CMD ["node", ".output/server/index.mjs"]
