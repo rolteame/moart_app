@@ -11,6 +11,8 @@ RUN yarn install
 # Copy the rest of the app
 COPY . .
 
+#Environment variables
+ENV BACKEND_URL=https://moart-backend.onrender.com/v1
 # Build the Nuxt app
 RUN yarn build
 
