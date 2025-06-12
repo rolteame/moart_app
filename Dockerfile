@@ -16,7 +16,7 @@ FROM base
 
 ENV PORT=$PORT
 ENV NODE_ENV=production
-ENV BACKEND_URL= https://moart-backend.onrender.com/v1
+ENV BACKEND_URL='https://moart-backend.onrender.com/v1'
 
 COPY --from=build /app/.output /app/.output
 
