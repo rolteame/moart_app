@@ -25,4 +25,4 @@ jobs:
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERUSERNAME }}/moart:latest
         
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKERUSERNAME }}/your-image-name:latest
+        run: docker push ${{ secrets.DOCKERUSERNAME }}/moart:latest
