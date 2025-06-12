@@ -22,4 +22,7 @@ jobs:
           password: ${{ secrets.DOCKERPASSWORD }}
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERUSERNAME }}/moart:latest
+        
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKERUSERNAME }}/your-image-name:latest
