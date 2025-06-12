@@ -1,19 +1,33 @@
-FROM node:slim
+# -------- Build Stage --------
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN yarn install
+
+# Copy the rest of the app
+COPY . .
+
+# Build the Nuxt app
+RUN yarn build
+
+# -------- Production Stage --------
+FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-ARG PORT=3000
+# Copy only the required files from builder
+COPY --from=builder /app/.output ./.output
+COPY --from=builder /app/package*.json ./
 
-COPY package.json yarn.lock ./
+# Install only production dependencies
+RUN yarn install
 
-RUN yarn install 
-
-RUN yarn build
-
-ENV PORT=$PORT
-ENV NODE_ENV=production
-ENV BACKEND_URL='https://moart-backend.onrender.com/v1'
-
-COPY . .
+# Expose port (default Nuxt port)
 EXPOSE 3000
+
+# Run Nuxt app
 CMD ["node", ".output/server/index.mjs"]
