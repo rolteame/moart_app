@@ -4,7 +4,7 @@ WORKDIR /app
 
 ARG PORT=3000
 
-COPY package.json yarn.lock .
+COPY package.json yarn.lock ./
 
 RUN yarn install 
 
@@ -14,4 +14,6 @@ ENV PORT=$PORT
 ENV NODE_ENV=production
 ENV BACKEND_URL='https://moart-backend.onrender.com/v1'
 
+COPY . .
+EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]
